@@ -69,17 +69,43 @@
         .curved-name-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 3; top:0; left:0; }
         .curved-name-svg text { font-family: 'Cinzel', serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.script-card:active {
+    transform: scale(0.95);
+    background: rgba(255,255,255,0.1) !important;
+    border-color: var(--accent) !important;
+    transition: 0.1s;
+}
+.script-card {
+    transition: 0.2s;
+}
     </style>
 </head>
 <body>
 
-    <div id="scr-load" class="screen active" style="justify-content: center;">
-        <img src="https://wiki.bloodontheclocktower.com/skins/pivot/assets/images/logo.png" alt="BOTC" class="main-logo">
-        <div style="margin: 20px 0; border: 1px dashed var(--purple-light); padding: 25px; background: rgba(0,0,0,0.3); border-radius: 15px; width: 100%;">
-            <input type="file" id="file-input" accept=".json" style="width: 100%;">
+<div id="scr-load" class="screen active" style="justify-content: center;">
+    <img src="https://villacuervos.es/img/main-logo.png" alt="BOTC" class="main-logo">
+    
+    <p style="font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 20px;">Selecciona un Guion Oficial</p>
+    
+    <div id="quick-scripts" style="display: flex; justify-content: space-between; gap: 12px; width: 100%; margin-bottom: 35px;">
+        <div class="script-card" onclick="loadRemoteScript('trouble_brewing.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
+            <img src="img/logo_trouble_brewing.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
         </div>
-        <button id="btn-to-setup" class="btn" disabled onclick="switchScreen('scr-setup')">Siguiente</button>
+        <div class="script-card" onclick="loadRemoteScript('bad_moon_rising.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
+            <img src="img/logo_badmoonrising.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
+        </div>
+        <div class="script-card" onclick="loadRemoteScript('sects_and_violets.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
+            <img src="img/logo_sectsviolets.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
+        </div>
     </div>
+
+    <p style="font-family: 'Cinzel'; font-size: 0.75rem; letter-spacing: 2px; color: #666; margin-bottom: 10px;">O sube un archivo .json</p>
+    <div style="margin-bottom: 25px; border: 1px dashed rgba(255,255,255,0.15); padding: 12px; background: rgba(0,0,0,0.2); border-radius: 12px; width: 100%;">
+        <input type="file" id="file-input" accept=".json" style="width: 100%; font-size: 0.7rem; color: #888;">
+    </div>
+    
+    <button id="btn-to-setup" class="btn" disabled onclick="switchScreen('scr-setup')">Siguiente</button>
+</div>
 
     <div id="scr-setup" class="screen" style="justify-content: center;">
         <h2 style="margin-bottom: 20px;">Jugadores Base</h2>
@@ -108,6 +134,29 @@
     </div>
 
     <script>
+function loadRemoteScript(fileName) {
+    // Animación visual de carga (cambia el botón siguiente a "Cargando...")
+    const nextBtn = document.getElementById('btn-to-setup');
+    nextBtn.innerText = "Cargando...";
+    
+    fetch(fileName)
+        .then(response => {
+            if (!response.ok) throw new Error("Archivo no encontrado");
+            return response.json();
+        })
+        .then(data => {
+            scriptData = data.filter(i => i.id !== "_meta");
+            nextBtn.disabled = false;
+            nextBtn.innerText = "Siguiente";
+            // Pasamos directamente a la pantalla de configuración de jugadores
+            switchScreen('scr-setup');
+        })
+        .catch(err => {
+            alert("Error: Asegúrate de que el archivo " + fileName + " esté en tu GitHub.");
+            nextBtn.innerText = "Siguiente";
+            console.error(err);
+        });
+}
         const DB = {
             townsfolk: ['chef', 'washerwoman', 'clockmaker', 'grandmother', 'librarian', 'juggler', 'soldier', 'ravenkeeper', 'sage', 'tealady', 'mayor', 'fool', 'virgin', 'empath', 'fortuneteller', 'undertaker', 'innkeeper', 'monk', 'exorcist', 'poppygrower', 'slayer', 'chambermaid', 'mathematician', 'dreamer', 'flowergirl', 'oracle', 'gambler', 'atheist', 'balloonist', 'huntsman', 'choirboy', 'villageidiot', 'acrobat', 'alchemist', 'alsaahir', 'amnesiac', 'artist', 'banshee', 'bountyhunter', 'cannibal', 'courtier', 'cultleader', 'engineer', 'farmer', 'fisherman', 'general', 'gossip', 'highpriestess', 'investigator', 'knight', 'lycanthrope', 'magician', 'minstrel', 'nightwatchman', 'noble', 'pacifist', 'philosopher', 'pixie', 'preacher', 'princess', 'professor', 'sailor', 'savant', 'seamstress', 'shugenja', 'snakecharmer', 'steward', 'towncrier'],
             outsiders: ['drunk', 'tinker', 'klutz', 'barber', 'lunatic', 'plaguedoctor', 'mutant', 'sweetheart', 'saint', 'butler', 'recluse', 'hermit', 'damsel', 'golem', 'goon', 'hatter', 'heretic', 'moonchild', 'ogre', 'politician', 'puzzlemaster', 'snitch', 'zealot'],
@@ -214,7 +263,7 @@
                 const role = drawPile.pop(); const id = role.id.toLowerCase().replace(/[-_]/g,''); const isEvil = DB.minions.concat(DB.demons).includes(id);
                 const name = TRADUCCIONES[id] || role.id.toUpperCase(); const color = isEvil ? 'var(--evil-red)' : 'var(--good-blue)';
                 const frame = document.getElementById('token-frame'); frame.className = 'token-display ' + (isEvil ? 'red-glow' : 'blue-glow');
-                frame.innerHTML = `<svg class="curved-name-svg" viewBox="0 0 300 300"><path id="curve" d="M 50,140 A 100,100 0 1,1 250,140" fill="transparent" /><text font-size="22"><textPath href="#curve" startOffset="50%" text-anchor="middle" style="fill: ${color};">${name}</textPath></text></svg><img id="t-img" src="img/${id}.png" alt="Token">`;
+                frame.innerHTML = `<svg class="curved-name-svg" viewBox="0 0 300 300"><path id="curve" d="M 50,150 A 100,100 0 1,1 250,140" fill="transparent" /><text font-size="30"><textPath href="#curve" startOffset="50%" text-anchor="middle" style="fill: ${color};">${name}</textPath></text></svg><img id="t-img" src="img/${id}.png" alt="Token">`;
                 const img = document.getElementById('t-img'); img.onerror = function() { this.src = `https://villacuervos.es/media/roles/carousel/townsfolk/${id}.png`; this.onerror = () => { this.src = `https://villacuervos.es/media/roles/carousel/demon/${id}.png`; this.onerror = () => this.src = `https://wiki.bloodontheclocktower.com/Special:FilePath/Icon_${role.id}.png`; }; };
                 document.getElementById('draw-prompt').style.display = 'none'; document.getElementById('draw-reveal').style.display = 'flex'; revealed = true;
             } else { document.getElementById('draw-prompt').style.display = 'flex'; document.getElementById('draw-reveal').style.display = 'none'; revealed = false; }
