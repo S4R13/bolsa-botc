@@ -211,7 +211,8 @@ function loadRemoteScript(fileName) {
             if (ids.includes('fanggu')) { modO += 1; modT -= 1; }
             if (ids.includes('vigormortis')) { modO -= 1; modT += 1; }
             if (drunkSelected) modT += 1;
-            const needed = { townsfolk: baseDist.t + modT, outsiders: baseDist.o + modO, minions: baseDist.m + modM, demons: baseDist.d + modD };
+            let finalOutsiders = Math.max(0, baseDist.o + modO);
+            const needed = { townsfolk: baseDist.t + modT, outsiders: finalOutsiders, minions: baseDist.m + modM, demons: baseDist.d + modD };
             ['townsfolk', 'outsiders', 'minions', 'demons', 'travelers'].forEach(type => {
                 const roles = scriptData.filter(r => DB[type].includes(r.id.toLowerCase().replace(/[-_]/g,''))); if (roles.length === 0) return;
                 let selInType = Array.from(selectedRoles).filter(r => DB[type].includes(r.id.toLowerCase().replace(/[-_]/g,'')));
