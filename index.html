@@ -16,7 +16,7 @@
         body { background-color: var(--purple-dark); background-image: radial-gradient(circle at center, rgba(61, 21, 94, 0.5) 0%, rgba(10, 4, 20, 1) 100%), url('https://villacuervos.es/assets/background-side-D8vAczLs.webp'); color: var(--text); font-family: 'Quicksand', sans-serif; margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden; position: fixed; }
         .screen { display: none; width: 100%; height: 100vh; padding: 20px; flex-direction: column; align-items: center; justify-content: flex-start; animation: fadeIn 0.4s; }
         .active { display: flex; }
-        h2, .type-header { font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 2px; margin: 10px 0; }
+        h2, .type-header, #total-bag-info { font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 2px; margin: 10px 0; }
         .main-logo { width: 80%; max-width: 280px; margin-bottom: 20px; }
         .btn { background: var(--purple-light); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 18px; margin: 10px 0; border-radius: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 100%; font-size: 1rem; }
         .btn:disabled { opacity: 0.3; }
@@ -274,7 +274,7 @@ function loadRemoteScript(fileName) {
                 const role = drawPile.pop(); const id = role.id.toLowerCase().replace(/[-_]/g,''); const isEvil = DB.minions.concat(DB.demons).includes(id);
                 const name = TRADUCCIONES[id] || role.id.toUpperCase(); const color = isEvil ? 'var(--evil-red)' : 'var(--good-blue)';
                 const frame = document.getElementById('token-frame'); frame.className = 'token-display ' + (isEvil ? 'red-glow' : 'blue-glow');
-                frame.innerHTML = `<svg class="curved-name-svg" viewBox="0 0 300 300"><path id="curve" d="M 35,150 A 115,115 0 1,1 265,150" fill="transparent" /><textPath href="#curve" startOffset="50%" text-anchor="middle" style="fill: ${color};">${name}</textPath></text></svg><img id="t-img" src="img/${id}.png" alt="Token">`;
+                frame.innerHTML = `<svg class="curved-name-svg" viewBox="0 0 300 300"><path id="curve" d="M 35,150 A 115,115 0 1,1 265,150" fill="transparent" /><text font-size="28"><textPath href="#curve" startOffset="50%" text-anchor="middle" style="fill: ${color};">${name}</textPath></text></svg><img id="t-img" src="img/${id}.png" alt="Token">`;
                 const img = document.getElementById('t-img'); img.onerror = function() { this.src = `https://villacuervos.es/media/roles/carousel/townsfolk/${id}.png`; this.onerror = () => { this.src = `https://villacuervos.es/media/roles/carousel/demon/${id}.png`; this.onerror = () => this.src = `https://wiki.bloodontheclocktower.com/Special:FilePath/Icon_${role.id}.png`; }; };
                 document.getElementById('draw-prompt').style.display = 'none'; document.getElementById('draw-reveal').style.display = 'flex'; revealed = true;
             } else { document.getElementById('draw-prompt').style.display = 'flex'; document.getElementById('draw-reveal').style.display = 'none'; revealed = false; }
