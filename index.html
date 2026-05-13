@@ -9,6 +9,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="img/icon.png">
     <title>Bolsa Digital - Blood on the Clocktower</title>
     <style>
+        @font-face { font-family: 'Dumbledor'; src: url('font/dum1.ttf') format('truetype'); font-weight: normal; font-style: normal; }
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Quicksand:wght@300;500&display=swap');
         :root { --purple-dark: #0a0414; --purple-mid: #1d0b3a; --purple-light: #5a189a; --good-blue: #0077b6; --evil-red: #9b2226; --text: #f0f0f0; --accent: #ffb703; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -74,7 +75,7 @@
         .blue-glow { box-shadow: 0 0 50px 15px var(--good-blue); }
         .red-glow { box-shadow: 0 0 50px 15px var(--evil-red); }
         .curved-name-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 3; top:0; left:0; }
-        .curved-name-svg text { font-family: 'Cinzel', serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .curved-name-svg text { font-family: 'Dumbledor', serif; font-weight: normal; text-transform: uppercase; letter-spacing: 1.5px; font-size: 28px; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .script-card:active {
     transform: scale(0.95);
@@ -273,7 +274,7 @@ function loadRemoteScript(fileName) {
                 const role = drawPile.pop(); const id = role.id.toLowerCase().replace(/[-_]/g,''); const isEvil = DB.minions.concat(DB.demons).includes(id);
                 const name = TRADUCCIONES[id] || role.id.toUpperCase(); const color = isEvil ? 'var(--evil-red)' : 'var(--good-blue)';
                 const frame = document.getElementById('token-frame'); frame.className = 'token-display ' + (isEvil ? 'red-glow' : 'blue-glow');
-                frame.innerHTML = `<svg class="curved-name-svg" viewBox="0 0 300 300"><path id="curve" d="M 50,150 A 100,100 0 1,1 250,140" fill="transparent" /><text font-size="30"><textPath href="#curve" startOffset="50%" text-anchor="middle" style="fill: ${color};">${name}</textPath></text></svg><img id="t-img" src="img/${id}.png" alt="Token">`;
+                frame.innerHTML = `<svg class="curved-name-svg" viewBox="0 0 300 300"><path id="curve" d="M 35,150 A 115,115 0 1,1 265,150" fill="transparent" /><textPath href="#curve" startOffset="50%" text-anchor="middle" style="fill: ${color};">${name}</textPath></text></svg><img id="t-img" src="img/${id}.png" alt="Token">`;
                 const img = document.getElementById('t-img'); img.onerror = function() { this.src = `https://villacuervos.es/media/roles/carousel/townsfolk/${id}.png`; this.onerror = () => { this.src = `https://villacuervos.es/media/roles/carousel/demon/${id}.png`; this.onerror = () => this.src = `https://wiki.bloodontheclocktower.com/Special:FilePath/Icon_${role.id}.png`; }; };
                 document.getElementById('draw-prompt').style.display = 'none'; document.getElementById('draw-reveal').style.display = 'flex'; revealed = true;
             } else { document.getElementById('draw-prompt').style.display = 'flex'; document.getElementById('draw-reveal').style.display = 'none'; revealed = false; }
