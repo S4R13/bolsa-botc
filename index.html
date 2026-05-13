@@ -23,7 +23,7 @@
         .screen { display: none; width: 100%; height: 100vh; padding: 20px; flex-direction: column; align-items: center; justify-content: flex-start; animation: fadeIn 0.4s; }
         .active { display: flex; }
         
-        /* Centrado para la ficha */
+        /* Centrado de la ficha */
         #scr-draw { justify-content: center !important; }
         #draw-reveal { display:none; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
 
@@ -80,78 +80,10 @@
 
 <div id="scr-load" class="screen active" style="justify-content: center;">
     <img src="img/logo.png" alt="Logo" class="main-logo">
-    <p style="font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 20px;">Selecciona un Guion Oficial</p>
+    <p style="font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 20px;">Guiones Oficiales</p>
     <div id="quick-scripts" style="display: flex; justify-content: space-between; gap: 12px; width: 100%; margin-bottom: 35px;">
         <div onclick="loadRemoteScript('./trouble_brewing.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);"><img src="img/logo_trouble_brewing.png" style="width: 85px; height: 85px; object-fit: contain;"></div>
         <div onclick="loadRemoteScript('./bad_moon_rising.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);"><img src="img/logo_badmoonrising.png" style="width: 85px; height: 85px; object-fit: contain;"></div>
         <div onclick="loadRemoteScript('./sects_and_violets.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);"><img src="img/logo_sectsviolets.png" style="width: 85px; height: 85px; object-fit: contain;"></div>
     </div>
-    <p style="font-family: 'Cinzel'; font-size: 0.75rem; letter-spacing: 2px; color: #666; margin-bottom: 10px;">O sube un archivo .json</p>
-    <input type="file" id="file-input" accept=".json" style="width: 100%; font-size: 0.7rem; color: #888;">
-    <button id="btn-to-setup" class="btn" disabled onclick="switchScreen('scr-setup')">Siguiente</button>
-</div>
-
-<div id="scr-setup" class="screen" style="justify-content: center;">
-    <h2 style="margin-bottom: 20px;">Jugadores Base</h2>
-    <input type="number" id="p-count" value="7" min="5" max="18" style="width: 100px; padding: 15px; font-size: 2.5rem; background: #000; color: #fff; border: 2px solid var(--purple-light); border-radius: 15px; text-align: center; margin-bottom: 30px;">
-    <button class="btn" onclick="startSelection()">Configurar Bolsa</button>
-</div>
-
-<div id="scr-selection" class="screen">
-    <h2 id="total-bag-info" style="color: var(--accent); margin-bottom: 10px;">Bolsa: 0 / 7</h2>
-    <div id="dynamic-configs" style="width: 100%;"></div>
-    <div class="selection-container"><div id="sections-wrapper"></div></div>
-    <button id="btn-confirm-bag" class="btn" disabled onclick="finalizeSetup()">Confirmar Bolsa</button>
-</div>
-
-<div id="scr-draw" class="screen" onclick="handleDraw()">
-    <div id="draw-prompt">
-        <img src="img/main-logo.png" alt="Logo">
-        <p style="font-family: 'Cinzel'; margin-top: 25px; color: #888; font-size: 0.9rem; letter-spacing: 4px;">TOCA PARA REVELAR</p>
-    </div>
-    <div id="draw-reveal">
-        <div id="token-frame" class="token-display"></div>
-        <p style="color:#666; font-size:0.8rem; margin-top:40px; letter-spacing: 2px;">TOCA PARA OCULTAR</p>
-    </div>
-</div>
-
-<script>
-    const TRADUCCIONES = { 
-        acrobat: "Acróbata", alchemist: "Alquimista", alsaahir: "Alsaahir", amnesiac: "Amnésico", artist: "Artista", atheist: "Ateo", balloonist: "Aeronauta", banshee: "Banshee", bountyhunter: "Cazarrecompensas", cannibal: "Caníbal", chambermaid: "Sirvienta", chef: "Chef", choirboy: "Niño del Coro", clockmaker: "Relojero", courtier: "Cortesano", cultleader: "Líder de Culto", dreamer: "Soñador", empath: "Empático", engineer: "Ingeniero", 
-        exorcist: "Exorcista", farmer: "Granjero", fisherman: "Pescador", flowergirl: "Florista", fool: "Bufón", fortuneteller: "Pitonisa", gambler: "Tahúr", general: "General", gossip: "Chismoso", grandmother: "Abuela", highpriestess: "Suma Sacerdotisa", huntsman: "Cazador", innkeeper: "Posadero", investigator: "Investigador", juggler: "Malabarista", king: "Rey", knight: "Caballero", librarian: "Bibliotecario", lycanthrope: "Licántropo", 
-        magician: "Mago", mathematician: "Matemático", mayor: "Alcalde", minstrel: "Juglar", monk: "Monje", nightwatchman: "Sereno", noble: "Noble", oracle: "Oráculo", pacifist: "Pacifista", philosopher: "Filósofo", pixie: "Duendecillo", poppygrower: "Cultivador de Opio", preacher: "Predicador", princess: "Princesa", professor: "Profesor", ravenkeeper: "Guardián de Cuervos", sage: "Sabio", sailor: "Marinero", savant: "Erudito", 
-        seamstress: "Costurera", shugenja: "Shugenja", slayer: "Exterminador", snakecharmer: "Encantador de Serpientes", soldier: "Soldado", steward: "Administrador", tealady: "Dama del Té", towncrier: "Pregonero", undertaker: "Enterrador", villageidiot: "Tonto del Pueblo", virgin: "Virgen", washerwoman: "Lavandera",            
-        barber: "Barbero", butler: "Mayordomo", damsel: "Damisela", drunk: "Borracho", golem: "Gólem", goon: "Matón", hatter: "Sombrerero", heretic: "Hereje", hermit: "Ermitaño", klutz: "Patoso", lunatic: "Lunático", moonchild: "Niña de la Luna", mutant: "Mutante", ogre: "Ogro", plaguedoctor: "Doctor de Plaga", politician: "Político", puzzlemaster: "Maestro del Puzle", recluse: "Recluso", saint: "Santo", snitch: "Soplón", sweetheart: "Enamorada", tinker: "Manitas", zealot: "Fanático",
-        assassin: "Asesino", baron: "Barón", boffin: "Rata de Laboratorio", boomdandy: "Boomdandy", cerenovus: "Cerenovus", devilsadvocate: "Abogado del Diablo", eviltwin: "Gemela Malvada", fearmonger: "Sembrador de Miedo", goblin: "Goblin", godfather: "Padrino", harpy: "Arpía", marionette: "Marioneta", mastermind: "Mente Maestra", mezepheles: "Mezepheles", organgrinder: "Organillero", pithag: "Bruja del Pozo", poisoner: "Envenenador", psychopath: "Psicópata", scarletwoman: "Mujer Escarlata", spy: "Espía", summoner: "Invocador", vizier: "Visir", widow: "Viuda", witch: "Bruja", wizard: "Hechicero", wraith: "Espectro", xaan: "Xaan",
-        alhadikhia: "Al-Hadikhia", fanggu: "Fang Gu", imp: "Diablillo", kazali: "Kazali", legion: "Legión", leviathan: "Leviatán", lilmonsta: "Lil' Monsta", lleech: "Lleech", lordoftyphon: "Señor de Typhon", nodashii: "No Dashii", ojo: "Ojo", po: "Po", pukka: "Pukka", riot: "Riot", shabaloth: "Shabaloth", vigormortis: "Vigormortis", vortox: "Vortox", yaggababble: "Yaggababble", zombuul: "Zombuul",
-        apprentice: "Aprendiz", barista: "Barista", beggar: "Mendigo", bishop: "Obispo", bonecollector: "Coleccionista de Huesos", bureaucrat: "Burócrata", butcher: "Carnicero", cacklejack: "Risistencia", deviant: "Pervertido", gangster: "Gánster", gnome: "Gnomo", gunslinger: "Pistolero", harlot: "Meretriz", judge: "Juez", matron: "Institutriz", scapegoat: "Chivo Expiatorio", thief: "Ladrón", voudon: "Voudon"
-    };
-
-    const TITULOS = { townsfolk: "ALDEANOS", outsiders: "FORASTEROS", minions: "ESBIRROS", demons: "DEMONIOS", travelers: "VIAJEROS" };
-
-    const DB = {
-        townsfolk: ['chef', 'washerwoman', 'clockmaker', 'grandmother', 'librarian', 'juggler', 'soldier', 'ravenkeeper', 'sage', 'tealady', 'mayor', 'fool', 'virgin', 'empath', 'fortuneteller', 'undertaker', 'innkeeper', 'monk', 'exorcist', 'poppygrower', 'slayer', 'chambermaid', 'mathematician', 'dreamer', 'flowergirl', 'oracle', 'gambler', 'atheist', 'balloonist', 'huntsman', 'choirboy', 'villageidiot', 'acrobat', 'alchemist', 'alsaahir', 'amnesiac', 'artist', 'banshee', 'bountyhunter', 'cannibal', 'courtier', 'cultleader', 'engineer', 'farmer', 'fisherman', 'general', 'gossip', 'highpriestess', 'investigator', 'knight', 'lycanthrope', 'magician', 'minstrel', 'nightwatchman', 'noble', 'pacifist', 'philosopher', 'pixie', 'preacher', 'princess', 'professor', 'sailor', 'savant', 'seamstress', 'shugenja', 'snakecharmer', 'steward', 'towncrier'],
-        outsiders: ['drunk', 'tinker', 'klutz', 'barber', 'lunatic', 'plaguedoctor', 'mutant', 'sweetheart', 'saint', 'butler', 'recluse', 'hermit', 'damsel', 'golem', 'goon', 'hatter', 'heretic', 'moonchild', 'ogre', 'politician', 'puzzlemaster', 'snitch', 'zealot'],
-        minions: ['godfather', 'poisoner', 'devilsadvocate', 'witch', 'assassin', 'summoner', 'eviltwin', 'baron', 'scarletwoman', 'spy', 'cerenovus', 'fearmonger', 'xaan', 'marionette', 'boffin', 'boomdandy', 'goblin', 'harpy', 'mastermind', 'mezepheles', 'organgrinder', 'pithag', 'psychopath', 'vizier', 'widow', 'wizard', 'wraith'],
-        demons: ['alhadikhia', 'pukka', 'imp', 'po', 'fanggu', 'zombuul', 'shabaloth', 'nodashii', 'vortox', 'vigormortis', 'kazali', 'legion', 'lordoftyphon', 'lilmonsta', 'leviathan', 'lleech', 'ojo', 'riot', 'yaggababble'],
-        travelers: ['apprentice', 'barista', 'beggar', 'bishop', 'bonecollector', 'bureaucrat', 'butcher', 'cacklejack', 'deviant', 'gangster', 'gnome', 'gunslinger', 'harlot', 'judge', 'matron', 'scapegoat', 'thief', 'voudon']
-    };
-
-    let scriptData = []; let playerCount = 7; let baseDist = {}; let selectedRoles = new Set();
-    let drunkSelected = false; let manualMods = { godfather: 0, balloonist: 0, hermit: 0, xaan: 0, typhon: 0, typhon_outsiders: 0, villageidiot: 0 };
-    let drawPile = []; let revealed = false;
-
-    function loadRemoteScript(path) {
-        const btn = document.getElementById('btn-to-setup'); btn.innerText = "Cargando...";
-        fetch(path).then(res => res.json()).then(data => { scriptData = data.filter(i => i.id !== "_meta"); btn.disabled = false; btn.innerText = "Siguiente"; switchScreen('scr-setup'); })
-        .catch(() => { alert("Error al cargar guion oficial."); btn.innerText = "Siguiente"; });
-    }
-
-    document.getElementById('file-input').onchange = (e) => {
-        const reader = new FileReader(); reader.onload = (ev) => { scriptData = JSON.parse(ev.target.result).filter(i => i.id !== "_meta"); document.getElementById('btn-to-setup').disabled = false; };
-        reader.readAsText(e.target.files[0]);
-    };
-
-    function startSelection() {
-        let val = parseInt(document.getElementById('p-count').value); playerCount = Math.min(Math.max(val, 5), 18);
-        if(playerCount == 5) baseDist = {t:3, o:0, m:1, d:1}; else if(playerCount == 6) baseDist = {t:3, o:1, m:1, d:1}; else if(playerCount == 7) baseDist = {t:5, o:0, m:1, d:1}; else if(playerCount == 8) baseDist = {t:5, o:1, m:1, d:1}; else if(playerCount == 9) baseDist = {t:5, o:2, m:1, d:1}; else if(playerCount == 10) baseDist = {t:7, o:0, m:2, d:1}; else if(playerCount == 11) baseDist =
+    <p style="font-family: 'Cinzel'; font-size: 0
