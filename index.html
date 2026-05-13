@@ -50,20 +50,27 @@
     width: 80vw; height: 80vw; max-width: 320px; max-height: 320px; 
     display: flex; align-items: center; justify-content: center; 
     position: relative; overflow: hidden;
-    
-    /* Nueva imagen de fondo ajustada */
     background-image: url('https://beardytas.com/wp-content/uploads/2024/05/token.6de3eb06.webp');
-    background-size: cover; /* Hace que la imagen cubra todo el círculo */
-    background-position: center; /* La centra perfectamente */
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.6); /* Añade sombra interna para dar profundidad */
+    background-size: cover;
+    background-position: center;
+    /* Mantenemos la sombra interna base */
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.6); 
 }
 
-/* Ajuste opcional para que el personaje se vea mejor sobre esa madera */
+/* CORRECCIÓN: Sumamos el halo exterior sin perder la profundidad interna */
+.blue-glow { 
+    box-shadow: 0 0 50px 15px rgba(0, 119, 182, 0.6), inset 0 0 50px rgba(0,0,0,0.6) !important; 
+}
+
+.red-glow { 
+    box-shadow: 0 0 50px 15px rgba(155, 34, 38, 0.6), inset 0 0 50px rgba(0,0,0,0.6) !important; 
+}
+
 .token-display img { 
-    width: 58%; /* Un pelín más pequeña para que se vea más madera */
+    width: 58%; 
     height: auto; 
     z-index: 2; 
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.9)); /* Sombra más marcada */
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.9)); 
     margin-top: 15px;
 }
         .blue-glow { box-shadow: 0 0 50px 15px var(--good-blue); }
