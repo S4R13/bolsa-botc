@@ -42,8 +42,10 @@
         #draw-prompt img { width: 180px; height: auto; animation: pulse 2s infinite; filter: drop-shadow(0 0 20px rgba(155,34,38,0.4)); }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
         .token-display { 
+    opacity: 0; 
+    transition: opacity 0.3s ease-in-out;
     background-color: #1a1a1a; 
-    border: 10px solid; 
+    border: none; 
     border-radius: 50%; 
     width: 80vw; height: 80vw; max-width: 320px; max-height: 320px; 
     display: flex; align-items: center; justify-content: center; 
@@ -64,8 +66,8 @@
     filter: drop-shadow(0 5px 15px rgba(0,0,0,0.9)); /* Sombra más marcada */
     margin-top: 15px;
 }
-        .blue-glow { border-color: var(--good-blue); box-shadow: 0 0 50px var(--good-blue); }
-        .red-glow { border-color: var(--evil-red); box-shadow: 0 0 50px var(--evil-red); }
+        .blue-glow { box-shadow: 0 0 50px 15px var(--good-blue); }
+        .red-glow { box-shadow: 0 0 50px 15px var(--evil-red); }
         .curved-name-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 3; top:0; left:0; }
         .curved-name-svg text { font-family: 'Cinzel', serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
