@@ -75,7 +75,8 @@
         .blue-glow { box-shadow: 0 0 50px 15px var(--good-blue); }
         .red-glow { box-shadow: 0 0 50px 15px var(--evil-red); }
         .curved-name-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 3; top:0; left:0; }
-        .curved-name-svg text { font-family: 'Dumbledor', serif; font-weight: normal; text-transform: uppercase; letter-spacing: 1.5px; font-size: 28px; }
+        .curved-name-svg text { font-family: 'Dumbledor', serif; fill: #000000 !important; stroke: rgba(0,0,0,0.2); stroke-width: 0.5px;
+font-weight: normal; text-transform: uppercase; letter-spacing: 1.5px; font-size: 28px; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .script-card:active {
     transform: scale(0.95);
@@ -131,15 +132,15 @@
     </div>
 
     <div id="scr-draw" class="screen" onclick="handleDraw()">
-        <div id="draw-prompt">
-            <img src="https://villacuervos.es/img/main-logo.png" alt="Logo">
-            <p style="font-family: 'Cinzel'; margin-top: 25px; color: #888; font-size: 0.9rem; letter-spacing: 4px;">TOCA PARA REVELAR</p>
-        </div>
-        <div id="draw-reveal" style="display:none; flex-direction: column; align-items: center; justify-content: center;">
-            <div id="token-frame" class="token-display"></div>
-            <p style="color:#666; font-size:0.8rem; margin-top:40px; letter-spacing: 2px;">TOCA PARA OCULTAR</p>
-        </div>
+    <div id="draw-prompt" style="text-align: center;">
+        <img src="img/main-logo.png" alt="Logo">
+        <p>TOCA PARA REVELAR</p>
     </div>
+    <div id="draw-reveal">
+        <div id="token-frame" class="token-display"></div>
+        <p>TOCA PARA OCULTAR</p>
+    </div>
+</div>
 
     <script>
 function loadRemoteScript(fileName) {
@@ -166,19 +167,19 @@ function loadRemoteScript(fileName) {
         });
 }
         const DB = {
-            townsfolk: ['chef', 'washerwoman', 'clockmaker', 'grandmother', 'librarian', 'juggler', 'soldier', 'ravenkeeper', 'sage', 'tealady', 'mayor', 'fool', 'virgin', 'empath', 'fortuneteller', 'undertaker', 'innkeeper', 'monk', 'exorcist', 'poppygrower', 'slayer', 'chambermaid', 'mathematician', 'dreamer', 'flowergirl', 'oracle', 'gambler', 'atheist', 'balloonist', 'huntsman', 'choirboy', 'villageidiot', 'acrobat', 'alchemist', 'alsaahir', 'amnesiac', 'artist', 'banshee', 'bountyhunter', 'cannibal', 'courtier', 'cultleader', 'engineer', 'farmer', 'fisherman', 'general', 'gossip', 'highpriestess', 'investigator', 'knight', 'lycanthrope', 'magician', 'minstrel', 'nightwatchman', 'noble', 'pacifist', 'philosopher', 'pixie', 'preacher', 'princess', 'professor', 'sailor', 'savant', 'seamstress', 'shugenja', 'snakecharmer', 'steward', 'towncrier'],
-            outsiders: ['drunk', 'tinker', 'klutz', 'barber', 'lunatic', 'plaguedoctor', 'mutant', 'sweetheart', 'saint', 'butler', 'recluse', 'hermit', 'damsel', 'golem', 'goon', 'hatter', 'heretic', 'moonchild', 'ogre', 'politician', 'puzzlemaster', 'snitch', 'zealot'],
-            minions: ['godfather', 'poisoner', 'devilsadvocate', 'witch', 'assassin', 'summoner', 'eviltwin', 'baron', 'scarletwoman', 'spy', 'cerenovus', 'fearmonger', 'xaan', 'marionette', 'boffin', 'boomdandy', 'goblin', 'harpy', 'mastermind', 'mezepheles', 'organgrinder', 'pithag', 'psychopath', 'vizier', 'widow', 'wizard', 'wraith'],
-            demons: ['alhadikhia', 'pukka', 'imp', 'po', 'fanggu', 'zombuul', 'shabaloth', 'nodashii', 'vortox', 'vigormortis', 'kazali', 'legion', 'lordoftyphon', 'lilmonsta', 'leviathan', 'lleech', 'ojo', 'riot', 'yaggababble'],
+            townsfolk: ['acrobat', 'alchemist', 'alsaahir', 'amnesiac', 'artist', 'atheist', 'balloonist', 'banshee', 'bountyhunter', 'cannibal', 'chambermaid', 'chef', 'choirboy', 'clockmaker', 'courtier', 'cultleader', 'dreamer', 'empath', 'engineer', 'exorcist', 'farmer', 'fisherman', 'flowergirl', 'fool', 'fortuneteller', 'gambler', 'general', 'gossip', 'grandmother', 'highpriestess', 'huntsman', 'innkeeper', 'investigator', 'juggler', 'king', 'knight', 'librarian', 'lycanthrope', 'magician', 'mathematician', 'mayor', 'minstrel', 'monk', 'nightwatchman', 'noble', 'oracle', 'pacifist', 'philosopher', 'pixie', 'poppygrower', 'preacher', 'princess', 'professor', 'ravenkeeper', 'sage', 'sailor', 'savant', 'seamstress', 'shugenja', 'slayer', 'snakecharmer', 'soldier', 'steward', 'tealady', 'towncrier', 'undertaker', 'villageidiot', 'virgin', 'washerwoman'],
+            outsiders: ['barber', 'butler', 'damsel', 'drunk', 'golem', 'goon', 'hatter', 'heretic', 'hermit', 'klutz', 'lunatic', 'moonchild', 'mutant', 'ogre', 'plaguedoctor', 'politician', 'puzzlemaster', 'recluse', 'saint', 'snitch', 'sweetheart', 'tinker', 'zealot'],
+            minions: ['assassin', 'baron', 'boffin', 'boomdandy', 'cerenovus', 'devilsadvocate', 'eviltwin', 'fearmonger', 'goblin', 'godfather', 'harpy', 'marionette', 'mastermind', 'mezepheles', 'organgrinder', 'pithag', 'poisoner', 'psychopath', 'scarletwoman', 'spy', 'summoner', 'vizier', 'widow', 'witch', 'wizard', 'wraith', 'xaan'],
+            demons: ['alhadikhia', 'fanggu', 'imp', 'kazali', 'legion', 'leviathan', 'lilmonsta', 'lleech', 'lordoftyphon', 'nodashii', 'ojo', 'po', 'pukka', 'riot', 'shabaloth', 'vigormortis', 'vortox', 'yaggababble', 'zombuul'],
             travelers: ['apprentice', 'barista', 'beggar', 'bishop', 'bonecollector', 'bureaucrat', 'butcher', 'cacklejack', 'deviant', 'gangster', 'gnome', 'gunslinger', 'harlot', 'judge', 'matron', 'scapegoat', 'thief', 'voudon']
-        };
+    };
 
         const TRADUCCIONES = { 
             acrobat: "Acróbata", alchemist: "Alquimista", alsaahir: "Alsaahir", amnesiac: "Amnésico", artist: "Artista", atheist: "Ateo", balloonist: "Aeronauta", banshee: "Banshee", bountyhunter: "Cazarrecompensas", cannibal: "Caníbal", chambermaid: "Sirvienta", chef: "Chef", choirboy: "Niño del Coro", clockmaker: "Relojero", courtier: "Cortesano", cultleader: "Líder de Culto", dreamer: "Soñador", empath: "Empático", engineer: "Ingeniero", 
             exorcist: "Exorcista", farmer: "Granjero", fisherman: "Pescador", flowergirl: "Florista", fool: "Bufón", fortuneteller: "Pitonisa", gambler: "Tahúr", general: "General", gossip: "Chismoso", grandmother: "Abuela", highpriestess: "Suma Sacerdotisa", huntsman: "Cazador", innkeeper: "Posadero", investigator: "Investigador", juggler: "Malabarista", king: "Rey", knight: "Caballero", librarian: "Bibliotecario", lycanthrope: "Licántropo", 
             magician: "Mago", mathematician: "Matemático", mayor: "Alcalde", minstrel: "Juglar", monk: "Monje", nightwatchman: "Sereno", noble: "Noble", oracle: "Oráculo", pacifist: "Pacifista", philosopher: "Filósofo", pixie: "Duendecillo", poppygrower: "Cultivador de Opio", preacher: "Predicador", princess: "Princesa", professor: "Profesor", ravenkeeper: "Guardián de Cuervos", sage: "Sabio", sailor: "Marinero", savant: "Erudito", 
             seamstress: "Costurera", shugenja: "Shugenja", slayer: "Exterminador", snakecharmer: "Encantador de Serpientes", soldier: "Soldado", steward: "Administrador", tealady: "Dama del Té", towncrier: "Pregonero", undertaker: "Enterrador", villageidiot: "Tonto del Pueblo", virgin: "Virgen", washerwoman: "Lavandera",            
-            barber: "Barbero", butler: "Mayordomo", damsel: "Damisela", drunk: "Borracho", golem: "Gólem", goon: "Matón", hatter: "Sombrerero", heretic: "Hereje", hermit: "Ermitaño", klutz: "Patoso", lunatic: "Lunático", moonchild: "Niña de la Luna", mutant: "Mutante", ogre: "Ogro", plaguedoctor: "Doctor de Plaga", politician: "Político", puzzlemaster: "Maestro del Puzle", recluse: "Recluso", saint: "Santo", snitch: "Soplón", sweetheart: "Adorable", tinker: "Manitas", zealot: "Fanático",
+            barber: "Barbero", butler: "Mayordomo", damsel: "Damisela", drunk: "Borracho", golem: "Gólem", goon: "Matón", hatter: "Sombrerero", heretic: "Hereje", hermit: "Ermitaño", klutz: "Patoso", lunatic: "Lunático", moonchild: "Niña de la Luna", mutant: "Mutante", ogre: "Ogro", plaguedoctor: "Doctor de la Plaga", politician: "Político", puzzlemaster: "Maestro del Puzle", recluse: "Recluso", saint: "Santo", snitch: "Soplón", sweetheart: "Adorable", tinker: "Manitas", zealot: "Fanático",
             assassin: "Asesino", baron: "Barón", boffin: "Rata de Laboratorio", boomdandy: "Boomdandy", cerenovus: "Cerenovus", devilsadvocate: "Abogado del Diablo", eviltwin: "Gemela Malvada", fearmonger: "Sembrador de Miedo", goblin: "Goblin", godfather: "Padrino", harpy: "Arpía", marionette: "Marioneta", mastermind: "Mente Maestra", mezepheles: "Mezepheles", organgrinder: "Organillero", pithag: "Pit Hag", poisoner: "Envenenador", psychopath: "Psicópata", scarletwoman: "Mujer Escarlata", spy: "Espía", summoner: "Invocador", vizier: "Visir", widow: "Viuda", witch: "Bruja", wizard: "Hechicero", wraith: "Espectro", xaan: "Xaan",
             alhadikhia: "Al-Hadikhia", fanggu: "Fang Gu", imp: "Diablillo", kazali: "Kazali", legion: "Legión", leviathan: "Leviatán", lilmonsta: "Lil' Monsta", lleech: "Lleech", lordoftyphon: "Señor de Typhon", nodashii: "No Dashii", ojo: "Ojo", po: "Po", pukka: "Pukka", riot: "Riot", shabaloth: "Shabaloth", vigormortis: "Vigormortis", vortox: "Vortox", yaggababble: "Yaggababble", zombuul: "Zombuul",
             apprentice: "Aprendiz", barista: "Barista", beggar: "Mendigo", bishop: "Obispo", bonecollector: "Coleccionista de Huesos", bureaucrat: "Burócrata", butcher: "Carnicero", cacklejack: "Risistencia", deviant: "Pervertido", gangster: "Gánster", gnome: "Gnomo", gunslinger: "Pistolero", harlot: "Meretriz", judge: "Juez", matron: "Institutriz", scapegoat: "Chivo Expiatorio", thief: "Ladrón", voudon: "Voudon"
@@ -274,7 +275,7 @@ function loadRemoteScript(fileName) {
                 const role = drawPile.pop(); const id = role.id.toLowerCase().replace(/[-_]/g,''); const isEvil = DB.minions.concat(DB.demons).includes(id);
                 const name = TRADUCCIONES[id] || role.id.toUpperCase(); const color = isEvil ? 'var(--evil-red)' : 'var(--good-blue)';
                 const frame = document.getElementById('token-frame'); frame.className = 'token-display ' + (isEvil ? 'red-glow' : 'blue-glow');
-                frame.innerHTML = `<svg class="curved-name-svg" viewBox="0 0 300 300"><path id="curve" d="M 35,150 A 95,95 0 1,1 265,150" fill="transparent" /><text font-size="28"><textPath href="#curve" startOffset="50%" text-anchor="middle" style="fill: ${color};">${name}</textPath></text></svg><img id="t-img" src="img/${id}.png" alt="Token">`;
+                frame.innerHTML = `<svg class="curved-name-svg" viewBox="0 0 300 300"><path id="curve" d="M 50,160 A 100,100 0 1,1 250,160" fill="transparent" /><text font-size="28" font-weight="900" style="fill: black; filter: drop-shadow(0px 1px 1px rgba(255,255,255,0.5));"><textPath href="#curve" startOffset="50%" text-anchor="middle">${name}</textPath></text></svg><img id="t-img" src="img/${id}.png" alt="Token">`;
                 const img = document.getElementById('t-img'); img.onerror = function() { this.src = `https://villacuervos.es/media/roles/carousel/townsfolk/${id}.png`; this.onerror = () => { this.src = `https://villacuervos.es/media/roles/carousel/demon/${id}.png`; this.onerror = () => this.src = `https://wiki.bloodontheclocktower.com/Special:FilePath/Icon_${role.id}.png`; }; };
                 document.getElementById('draw-prompt').style.display = 'none'; document.getElementById('draw-reveal').style.display = 'flex'; revealed = true;
             } else { document.getElementById('draw-prompt').style.display = 'flex'; document.getElementById('draw-reveal').style.display = 'none'; revealed = false; }
