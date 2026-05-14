@@ -9,113 +9,76 @@
     <link rel="apple-touch-icon" sizes="180x180" href="img/icon.png">
     <title>Bolsa Digital - Blood on the Clocktower</title>
     <style>
-        @font-face { font-family: 'Dumbledor'; src: url('font/dum1.ttf') format('truetype'); font-weight: normal; font-style: normal; }
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Quicksand:wght@300;500&display=swap');
-        :root { --purple-dark: #0a0414; --purple-mid: #1d0b3a; --purple-light: #5a189a; --good-blue: #0077b6; --evil-red: #9b2226; --text: #f0f0f0; --accent: #ffb703; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--purple-dark); background-image: radial-gradient(circle at center, rgba(61, 21, 94, 0.5) 0%, rgba(10, 4, 20, 1) 100%), url('https://villacuervos.es/assets/background-side-D8vAczLs.webp'); color: var(--text); font-family: 'Quicksand', sans-serif; margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden; position: fixed; }
-        .screen { display: none; width: 100%; height: 100vh; padding: 20px; flex-direction: column; align-items: center; justify-content: flex-start; animation: fadeIn 0.4s; }
-        .active { display: flex; }
-        h2, .type-header, #total-bag-info { font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 2px; margin: 10px 0; }
-        .main-logo { width: 80%; max-width: 280px; margin-bottom: 20px; }
-        .btn { background: var(--purple-light); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 18px; margin: 10px 0; border-radius: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 100%; font-size: 1rem; }
-        .btn:disabled { opacity: 0.3; }
-        .selection-container { width: 100%; flex-grow: 1; overflow-y: auto; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 20px; border: 1px solid var(--purple-mid); margin-bottom: 10px; -webkit-overflow-scrolling: touch; }
-        .config-panel { padding: 12px; border-radius: 12px; margin-bottom: 10px; width: 100%; border: 1px solid rgba(255,255,255,0.2); font-size: 0.8rem; }
-        .panel-evil { background: #2a0a0a; border-color: var(--evil-red); }
-        .panel-good { background: #0a1a2a; border-color: var(--good-blue); }
-        .panel-info { background: #1a0a2a; border-color: var(--purple-light); }
-        .gf-options { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-        .gf-btn { flex: 1; min-width: 70px; padding: 10px; border-radius: 8px; border: 1px solid #444; background: #222; color: white; font-size: 0.65rem; }
-        .gf-btn.active { background: var(--purple-light); border-color: white; font-weight: bold; }
-        .panel-evil .gf-btn.active { background: var(--evil-red); }
-        .type-section { margin-bottom: 25px; width: 100%; }
-        .type-info { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--purple-light); padding-bottom: 8px; margin-bottom: 12px; }
-        .count-badge { background: #000; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; }
-        .count-ok { color: #00ff88; border: 1px solid #00ff88; }
-        .count-pending { color: var(--accent); border: 1px solid var(--accent); }
-        .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 8px; }
-        .role-item { font-size: 0.65rem; padding: 10px 4px; border: 1px solid #444; border-radius: 8px; background: #111; text-align: center; text-transform: uppercase; min-height: 45px; display: flex; align-items: center; justify-content: center; }
-        .role-item.selected { background: var(--purple-light); border-color: #fff; }
-        .role-item.special-selected { background: #ff5400; border-color: #fff; font-weight: bold; }
-        #scr-draw { justify-content: center; }
-        #draw-prompt { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        #draw-prompt img { width: 180px; height: auto; animation: pulse 2s infinite; filter: drop-shadow(0 0 20px rgba(155,34,38,0.4)); }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        .token-display { 
-    background-color: #1a1a1a; 
-    border: none; 
-    border-radius: 50%; 
-    width: 80vw; height: 80vw; max-width: 320px; max-height: 320px; 
-    display: flex; align-items: center; justify-content: center; 
-    position: relative; overflow: hidden;
-    background-image: url('https://beardytas.com/wp-content/uploads/2024/05/token.6de3eb06.webp');
-    background-size: cover;
-    background-position: center;
-    /* Mantenemos la sombra interna base */
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.6); 
-}
+    @font-face { font-family: 'Dumbledor'; src: url('font/dum1.ttf') format('truetype'); font-weight: normal; font-style: normal; }
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Quicksand:wght@300;500&display=swap');
+    
+    :root { --purple-dark: #0a0414; --purple-mid: #1d0b3a; --purple-light: #5a189a; --good-blue: #0077b6; --evil-red: #9b2226; --text: #f0f0f0; --accent: #ffb703; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    
+    body { background-color: var(--purple-dark); background-image: radial-gradient(circle at center, rgba(61, 21, 94, 0.5) 0%, rgba(10, 4, 20, 1) 100%), url('img/background-side-D8vAczLs.webp'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text); font-family: 'Quicksand', sans-serif; margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden; position: fixed; }
+    
+    .screen { display: none; width: 100%; height: 100vh; padding: 20px; flex-direction: column; align-items: center; justify-content: flex-start; animation: fadeIn 0.4s; }
+    .active { display: flex; }
+    
+    /* UNIFICACIÓN DE GUÍAS (REVELAR/OCULTAR) */
+    #draw-prompt p, #draw-reveal p { font-family: 'Cinzel', serif !important; color: #888; font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; margin-top: 25px; }
+    
+    /* CENTRADO DE FICHA */
+    #scr-draw { justify-content: center !important; }
+    #draw-reveal { display:none; flex-direction: column; align-items: center; justify-content: center; width: 100%; flex-grow: 1; }
 
-/* CORRECCIÓN: Sumamos el halo exterior sin perder la profundidad interna */
-.blue-glow { 
-    box-shadow: 0 0 50px 15px rgba(0, 119, 182, 0.6), inset 0 0 50px rgba(0,0,0,0.6) !important; 
-}
-
-.red-glow { 
-    box-shadow: 0 0 50px 15px rgba(155, 34, 38, 0.6), inset 0 0 50px rgba(0,0,0,0.6) !important; 
-}
-
-.token-display img { 
-    width: 58%; 
-    height: auto; 
-    z-index: 2; 
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.9)); 
-    margin-top: 15px;
-}
-        .blue-glow { box-shadow: 0 0 50px 15px var(--good-blue); }
-        .red-glow { box-shadow: 0 0 50px 15px var(--evil-red); }
-        .curved-name-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 3; top:0; left:0; }
-        .curved-name-svg text { font-family: 'Dumbledor', serif; fill: #000000 !important; stroke: rgba(0,0,0,0.2); stroke-width: 0.5px;
-font-weight: normal; text-transform: uppercase; letter-spacing: 1.5px; font-size: 28px; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.script-card:active {
-    transform: scale(0.95);
-    background: rgba(255,255,255,0.1) !important;
-    border-color: var(--accent) !important;
-    transition: 0.1s;
-}
-.script-card {
-    transition: 0.2s;
-}
-    </style>
+    h2, .type-header, #total-bag-info { font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 2px; margin: 10px 0; }
+    .main-logo { width: 80%; max-width: 280px; margin-bottom: 20px; }
+    .btn { background: var(--purple-light); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 18px; margin: 10px 0; border-radius: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 100%; font-size: 1rem; }
+    .btn:disabled { opacity: 0.3; }
+    .selection-container { width: 100%; flex-grow: 1; overflow-y: auto; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 20px; border: 1px solid var(--purple-mid); margin-bottom: 10px; -webkit-overflow-scrolling: touch; }
+    
+    .token-display { background-color: #1a1a1a; border: none; border-radius: 50%; width: 80vw; height: 80vw; max-width: 320px; max-height: 320px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background-image: url('https://beardytas.com/wp-content/uploads/2024/05/token.6de3eb06.webp'); background-size: cover; background-position: center; box-shadow: inset 0 0 50px rgba(0,0,0,0.6); }
+    .token-display img { width: 58%; height: auto; z-index: 2; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.9)); margin-top: 15px; }
+    
+    /* HALOS MÍSTICOS */
+    .blue-glow { box-shadow: 0 0 50px 15px rgba(0, 119, 182, 0.6), inset 0 0 50px rgba(0,0,0,0.6) !important; }
+    .red-glow { box-shadow: 0 0 50px 15px rgba(155, 34, 38, 0.6), inset 0 0 50px rgba(0,0,0,0.6) !important; }
+    
+    .curved-name-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 3; top:0; left:0; }
+    
+    /* TEXTO CON RELIEVE (TRAZO CLARO) */
+    .curved-name-svg text { 
+        font-family: 'Dumbledor', serif; 
+        fill: #000000 !important; 
+        stroke: rgba(255, 255, 255, 0.2); /* Trazo blanco muy sutil para simular relieve */
+        stroke-width: 0.8px;
+        text-transform: uppercase; 
+        letter-spacing: 1.5px; 
+    }
+    
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .script-card:active { transform: scale(0.95); background: rgba(255,255,255,0.1) !important; border-color: var(--accent) !important; transition: 0.1s; }
+    .script-card { transition: 0.2s; }
+</style>
 </head>
 <body>
 
 <div id="scr-load" class="screen active" style="justify-content: center;">
-    <img src="img/logo.png" alt="Logo" class="main-logo">
-    
+    <img src="img/logo.png" alt="Logo" class="main-logo">    
     <p style="font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 20px;">Selecciona un Guion Oficial</p>
-    
     <div id="quick-scripts" style="display: flex; justify-content: space-between; gap: 12px; width: 100%; margin-bottom: 35px;">
-        <div class="script-card" onclick="loadRemoteScript('trouble_brewing.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
-            <img src="img/logo_trouble_brewing.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
-        </div>
-        <div class="script-card" onclick="loadRemoteScript('bad_moon_rising.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
-            <img src="img/logo_badmoonrising.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
-        </div>
-        <div class="script-card" onclick="loadRemoteScript('sects_and_violets.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
-            <img src="img/logo_sectsviolets.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
-        </div>
+    <div class="script-card" onclick="loadRemoteScript('trouble_brewing.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
+    <img src="img/logo_trouble_brewing.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
     </div>
-
+    <div class="script-card" onclick="loadRemoteScript('bad_moon_rising.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
+    <img src="img/logo_badmoonrising.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
+    </div>
+    <div class="script-card" onclick="loadRemoteScript('sects_and_violets.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
+    <img src="img/logo_sectsviolets.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
+    </div>
+    </div>
     <p style="font-family: 'Cinzel'; font-size: 0.75rem; letter-spacing: 2px; color: #666; margin-bottom: 10px;">O sube un archivo .json</p>
     <div style="margin-bottom: 25px; border: 1px dashed rgba(255,255,255,0.15); padding: 12px; background: rgba(0,0,0,0.2); border-radius: 12px; width: 100%;">
-        <input type="file" id="file-input" accept=".json" style="width: 100%; font-size: 0.7rem; color: #888;">
-    </div>
-    
+    <input type="file" id="file-input" accept=".json" style="width: 100%; font-size: 0.7rem; color: #888;">
+    </div>    
     <button id="btn-to-setup" class="btn" disabled onclick="switchScreen('scr-setup')">Siguiente</button>
-</div>
-
+    </div>
     <div id="scr-setup" class="screen" style="justify-content: center;">
         <h2 style="margin-bottom: 20px;">Jugadores Base</h2>
         <input type="number" id="p-count" value="7" min="5" max="18" style="width: 100px; padding: 15px; font-size: 2.5rem; background: #000; color: #fff; border: 2px solid var(--purple-light); border-radius: 15px; text-align: center; margin-bottom: 30px;">
