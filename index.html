@@ -250,18 +250,12 @@ function loadRemoteScript(fileName) {
                 });
                 section.appendChild(grid); wrapper.appendChild(section);
             });
-            // 1. Calculamos el total real (Roles base + Viajeros + Borracho si existe)
-            let totalInBag = selectedRoles.size + (drunkSelected ? 1 : 0);
-            // 2. Contamos cuántos de esos son viajeros (solo para informar al usuario)
-            const numTravelers = Array.from(selectedRoles).filter(r => DB.travelers.includes(r.id.toLowerCase().replace(/[-_]/g,''))).length;
-            // 3. Actualizamos el texto informativo
-            // Mostrará algo como: "Bolsa: 7 + 1 Viajeros (Total: 8)"
-            document.getElementById('total-bag-info').innerText = `Jugadores: ${playerCount} + ${numTravelers} Viajeros (Total: ${totalInBag})`;
-            // 4. El botón se activa si el total es igual o mayor al número de jugadores inicial
-            // Esto permite que si elegiste 7 jugadores, puedas cerrar la bolsa con 7, 8 o más si son viajeros.
-            document.getElementById('btn-confirm-bag').disabled = totalInBag < playerCount;
-            // 5. Mantenemos las alertas de Cazador/Niño del Coro al final
-            const ids = Array.from(selectedRoles).map(r => r.id.toLowerCase().replace(/[-_]/g,'')); checkInclusionAlerts(ids);
+        let totalInBag = selectedRoles.size + (drunkSelected ? 1 : 0);
+        const numTravelers = Array.from(selectedRoles).filter(r => DB.travelers.includes(r.id.toLowerCase().replace(/[-_]/g,''))).length;
+        document.getElementById('total-bag-info').innerText = `Jugadores: ${playerCount} + ${numTravelers} Viajeros (Total: ${totalInBag})`;
+        document.getElementById('btn-confirm-bag').disabled = totalInBag < playerCount;
+        const ids = Array.from(selectedRoles).map(r => r.id.toLowerCase().replace(/[-_]/g,'')); 
+        checkInclusionAlerts(ids);
 }
 
         function createPanel(title, text, key, options, cssClass) {
@@ -277,13 +271,18 @@ function loadRemoteScript(fileName) {
         function addAlert(txt) { const a = document.createElement('div'); a.className = "config-panel panel-info"; a.innerHTML = txt; document.getElementById('dynamic-configs').prepend(a); }
 
         function finalizeSetup() {
-    // Creamos la bolsa con los roles del Set
     let bag = Array.from(selectedRoles);    
     
-    // IMPORTANTE: Añadir la ficha del Borracho si está seleccionado
+    // Si el Borracho está seleccionado, añadimos su ficha físicamente a la bolsa [cite: 5]
     if (drunkSelected) {
         bag.push({ id: 'drunk' });
     }
+    
+    const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
+    // ... resto de la lógica del Village Idiot ...
+    drawPile = bag.sort(() => 0.5 - Math.random()); 
+    switchScreen('scr-draw');
+}
     
     const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
     
