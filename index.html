@@ -82,14 +82,14 @@
     /* El truco mágico: el borde se dibuja DEBAJO del negro */
     paint-order: stroke fill;
     stroke: rgba(255, 255, 255, 0.6); /* Brillo de borde de madera */
-    stroke-width: 1.5px; /* Ahora sí puedes subir el grosor sin miedo */
+    stroke-width: 3.0px; /* Ahora sí puedes subir el grosor sin miedo */
     
     /* Sombra de profundidad */
-    filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.8));
+    /* filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.8)); */
     
     text-transform: uppercase; 
     letter-spacing: 2.5px; 
-    font-weight: 900; 
+    font-weight: 700; 
 }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .script-card:active {
@@ -301,7 +301,7 @@ function loadRemoteScript(fileName) {
         const finX = centro + radio;    
 
         // Ajuste automático de fuente por longitud de nombre
-        const fontSize = name.length > 15 ? "20" : "28";
+        const fontSize = name.length > 14 ? "20" : "28";
 
         // Inserción del HTML
         frame.innerHTML = `
