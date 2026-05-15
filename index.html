@@ -131,15 +131,20 @@
     </div>
 
     <div id="scr-draw" class="screen" onclick="handleDraw()">
-        <div id="draw-prompt">
-            <img src="https://villacuervos.es/img/main-logo.png" alt="Logo">
-            <p style="font-family: 'Cinzel'; margin-top: 25px; color: #888; font-size: 0.9rem; letter-spacing: 4px;">TOCA PARA REVELAR</p>
-        </div>
-        <div id="draw-reveal" style="display:none; flex-direction: column; align-items: center; justify-content: center;">
-            <div id="token-frame" class="token-display"></div>
-            <p style="font-family: 'Cinzel'color:#888; font-size:0.9rem; margin-top:40px; letter-spacing: 4px;">TOCA PARA OCULTAR</p>
-        </div>
+    <div id="draw-prompt" style="text-align: center;">
+        <img src="https://villacuervos.es/img/main-logo.png" alt="Logo" style="width: 180px;">
+        <p style="font-family: 'Cinzel', serif; margin-top: 25px; color: #888; font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase;">
+            TOCA PARA REVELAR
+        </p>
     </div>
+
+    <div id="draw-reveal" style="display:none; flex-direction: column; align-items: center; justify-content: center;">
+        <div id="token-frame" class="token-display"></div>
+        <p style="font-family: 'Cinzel', serif; margin-top: 25px; color: #888; font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase;">
+            TOCA PARA OCULTAR
+        </p>
+    </div>
+</div>
 
     <script>
 function loadRemoteScript(fileName) {
