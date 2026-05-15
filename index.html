@@ -255,11 +255,19 @@ function loadRemoteScript(fileName) {
                 });
                 section.appendChild(grid); wrapper.appendChild(section);
             });
-            let totalBase = Array.from(selectedRoles).filter(r => !DB.travelers.includes(r.id.toLowerCase().replace(/[-_]/g,''))).length;
-            document.getElementById('total-bag-info').innerText = `Bolsa: ${totalBase} / ${playerCount}`;
-            document.getElementById('btn-confirm-bag').disabled = totalBase !== playerCount;
-            checkInclusionAlerts(ids);
-        }
+            // 1. Calculamos el total real (Roles base + Viajeros + Borracho si existe)
+            let totalInBag = selectedRoles.size + (drunkSelected ? 1 : 0);
+            // 2. Contamos cuántos de esos son viajeros (solo para informar al usuario)
+            const numTravelers = Array.from(selectedRoles).filter(r => DB.travelers.includes(r.id.toLowerCase().replace(/[-_]/g,''))).length;
+            // 3. Actualizamos el texto informativo
+            // Mostrará algo como: "Bolsa: 7 + 1 Viajeros (Total: 8)"
+            document.getElementById('total-bag-info').innerText = `Jugadores: ${playerCount} + ${numTravelers} Viajeros (Total: ${totalInBag})`;
+            // 4. El botón se activa si el total es igual o mayor al número de jugadores inicial
+            // Esto permite que si elegiste 7 jugadores, puedas cerrar la bolsa con 7, 8 o más si son viajeros.
+            document.getElementById('btn-confirm-bag').disabled = totalInBag < playerCount;
+            // 5. Mantenemos las alertas de Cazador/Niño del Coro al final
+            const ids = Array.from(selectedRoles).map(r => r.id.toLowerCase().replace(/[-_]/g,'')); checkInclusionAlerts(ids);
+}
 
         function createPanel(title, text, key, options, cssClass) {
             const panel = document.createElement('div'); panel.className = `config-panel ${cssClass}`; panel.innerHTML = `<div><b>${title}:</b> ${text}</div>`;
@@ -267,7 +275,6 @@ function loadRemoteScript(fileName) {
             options.forEach(opt => { const btn = document.createElement('button'); btn.className = `gf-btn ${manualMods[key] === opt ? 'active' : ''}`; btn.innerText = (key === 'villageidiot') ? (opt === 0 ? "1 TONTO" : "3 TONTOS") : (opt > 0 ? `+${opt}` : opt); btn.onclick = () => { manualMods[key] = opt; updateUI(); }; optsDiv.appendChild(btn); });
             panel.appendChild(optsDiv); document.getElementById('dynamic-configs').appendChild(panel);
         }
-
         function checkInclusionAlerts(ids) {
             if (ids.includes('huntsman') && !ids.includes('damsel')) addAlert("⚠️ <b>CAZADOR:</b> Añade a la <b>DAMISELA</b>.");
             if (ids.includes('choirboy') && !ids.includes('king')) addAlert("⚠️ <b>NIÑO DEL CORO:</b> Añade al <b>REY</b>.");
@@ -275,15 +282,29 @@ function loadRemoteScript(fileName) {
         function addAlert(txt) { const a = document.createElement('div'); a.className = "config-panel panel-info"; a.innerHTML = txt; document.getElementById('dynamic-configs').prepend(a); }
 
         function finalizeSetup() {
-            let bag = Array.from(selectedRoles).filter(r => !DB.travelers.includes(r.id.toLowerCase().replace(/[-_]/g,'')));
-            const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
-            if (ids.includes('villageidiot') && manualMods.villageidiot === 2) {
-                const t = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'villageidiot'); bag.push(t, t); let rem = 0;
-                for (let i = bag.length - 1; i >= 0 && rem < 2; i--) { let rid = bag[i].id.toLowerCase().replace(/[-_]/g,''); if (DB.townsfolk.includes(rid) && rid !== 'villageidiot') { bag.splice(i, 1); rem++; } }
-            }
-            drawPile = bag.sort(() => 0.5 - Math.random()); switchScreen('scr-draw');
-        }
+        // Creamos la bolsa con TODOS los roles seleccionados (Base + Viajeros)
+        let bag = Array.from(selectedRoles);    
+        // Si hay borracho (drunk), lo añadimos (aunque visualmente sea un Townsfolk, en la bolsa es una ficha)
+        // Nota: Asegúrate de tener 'drunk' en tu lógica de IDs si lo manejas aparte    
+        const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
+        // Lógica especial para el Tonto del Pueblo (Village Idiot) si está activada la opción de 3
+        if (ids.includes('villageidiot') && manualMods.villageidiot === 2) {
+        const t = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'villageidiot');
+        bag.push(t, t); 
+        let rem = 0;
+        for (let i = bag.length - 1; i >= 0 && rem < 2; i--) { 
+            let rid = bag[i].id.toLowerCase().replace(/[-_]/g,''); 
+            if (DB.townsfolk.includes(rid) && rid !== 'villageidiot') { 
+                bag.splice(i, 1); 
+                rem++; 
+            } 
+        } 
+    }
 
+    // Mezclamos la bolsa completa. El tamaño de drawPile será el total de fichas a repartir.
+    drawPile = bag.sort(() => 0.5 - Math.random()); 
+    switchScreen('scr-draw');
+}
         function handleDraw() {
         if (!revealed) {
         if (drawPile.length === 0) return location.reload();        
