@@ -42,145 +42,83 @@
         #draw-prompt { display: flex; flex-direction: column; align-items: center; justify-content: center; }
         #draw-prompt img { width: 180px; height: auto; animation: pulse 2s infinite; filter: drop-shadow(0 0 20px rgba(155,34,38,0.4)); }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        .token-display { 
-    background-color: #1a1a1a; 
-    border: none; 
-    border-radius: 50%; 
-    width: 80vw; height: 80vw; max-width: 320px; max-height: 320px; 
-    display: flex; align-items: center; justify-content: center; 
-    position: relative; overflow: hidden;
-    background-image: url('https://beardytas.com/wp-content/uploads/2024/05/token.6de3eb06.webp');
-    background-size: cover;
-    background-position: center;
-    /* Mantenemos la sombra interna base */
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.6); 
-}
-
-/* CORRECCIÓN: Sumamos el halo exterior sin perder la profundidad interna */
-.blue-glow { 
-    box-shadow: 0 0 50px 15px rgba(0, 119, 182, 0.6), inset 0 0 50px rgba(0,0,0,0.6) !important; 
-}
-
-.red-glow { 
-    box-shadow: 0 0 50px 15px rgba(155, 34, 38, 0.6), inset 0 0 50px rgba(0,0,0,0.6) !important; 
-}
-
-.token-display img { 
-    width: 58%; 
-    height: auto; 
-    z-index: 2; 
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.9)); 
-    margin-top: 15px;
-}
-        .blue-glow { box-shadow: 0 0 50px 15px var(--good-blue); }
-        .red-glow { box-shadow: 0 0 50px 15px var(--evil-red); }
+        .token-display { background-color: #1a1a1a; border: none; border-radius: 50%; width: 80vw; height: 80vw; max-width: 320px; max-height: 320px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background-image: url('https://beardytas.com/wp-content/uploads/2024/05/token.6de3eb06.webp'); background-size: cover; background-position: center; box-shadow: inset 0 0 50px rgba(0,0,0,0.6); }
+        .blue-glow { box-shadow: 0 0 50px 15px rgba(0, 119, 182, 0.6), inset 0 0 50px rgba(0,0,0,0.6) !important; }
+        .red-glow { box-shadow: 0 0 50px 15px rgba(155, 34, 38, 0.6), inset 0 0 50px rgba(0,0,0,0.6) !important; }
+        .token-display img { width: 58%; height: auto; z-index: 2; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.9)); margin-top: 15px; }
         .curved-name-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 3; top:0; left:0; }
+        
         .curved-name-svg text { 
-.curved-name-svg text { 
-    font-family: 'Dumbledor', serif; 
-    fill: #000000 !important; 
-    paint-order: stroke fill;
-    stroke: rgba(255, 255, 255, 0.6); 
-    stroke-width: 1.5px; 
-    text-transform: uppercase; 
-    letter-spacing: 5.0px; 
-    font-weight: 700; 
-}
+            font-family: 'Dumbledor', serif; 
+            fill: #000000 !important; 
+            paint-order: stroke fill;
+            stroke: rgba(255, 255, 255, 0.6); 
+            stroke-width: 1.5px; 
+            text-transform: uppercase; 
+            letter-spacing: 5.0px; 
+            font-weight: 700; 
+        }
+
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.script-card:active {
-    transform: scale(0.95);
-    background: rgba(255,255,255,0.1) !important;
-    border-color: var(--accent) !important;
-    transition: 0.1s;
-}
-.script-card {
-    transition: 0.2s;
-}
+        .script-card:active { transform: scale(0.95); background: rgba(255,255,255,0.1) !important; border-color: var(--accent) !important; transition: 0.1s; }
+        .script-card { transition: 0.2s; }
     </style>
 </head>
 <body>
 
 <div id="scr-load" class="screen active" style="justify-content: center;">
     <img src="img/logo.png" alt="Logo" class="main-logo">
-    
     <p style="font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 20px;">Selecciona un Guion Oficial</p>
-    
     <div id="quick-scripts" style="display: flex; justify-content: space-between; gap: 12px; width: 100%; margin-bottom: 35px;">
         <div class="script-card" onclick="loadRemoteScript('trouble_brewing.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
-            <img src="img/logo_trouble_brewing.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
+            <img src="img/logo_trouble_brewing.png" style="width: 85px; height: 85px; object-fit: contain;">
         </div>
         <div class="script-card" onclick="loadRemoteScript('bad_moon_rising.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
-            <img src="img/logo_badmoonrising.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
+            <img src="img/logo_badmoonrising.png" style="width: 85px; height: 85px; object-fit: contain;">
         </div>
         <div class="script-card" onclick="loadRemoteScript('sects_and_violets.json')" style="flex:1; cursor:pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 15px; border: 1px solid var(--purple-mid);">
-            <img src="img/logo_sectsviolets.png" style="width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));">
+            <img src="img/logo_sectsviolets.png" style="width: 85px; height: 85px; object-fit: contain;">
         </div>
     </div>
-
     <p style="font-family: 'Cinzel'; font-size: 0.75rem; letter-spacing: 2px; color: #666; margin-bottom: 10px;">O sube un archivo .json</p>
     <div style="margin-bottom: 25px; border: 1px dashed rgba(255,255,255,0.15); padding: 12px; background: rgba(0,0,0,0.2); border-radius: 12px; width: 100%;">
         <input type="file" id="file-input" accept=".json" style="width: 100%; font-size: 0.7rem; color: #888;">
     </div>
-    
     <button id="btn-to-setup" class="btn" disabled onclick="switchScreen('scr-setup')">Siguiente</button>
 </div>
 
-    <div id="scr-setup" class="screen" style="justify-content: center;">
-        <h2 style="margin-bottom: 20px;">Jugadores Base</h2>
-        <input type="number" id="p-count" value="7" min="5" max="18" style="width: 100px; padding: 15px; font-size: 2.5rem; background: #000; color: #fff; border: 2px solid var(--purple-light); border-radius: 15px; text-align: center; margin-bottom: 30px;">
-        <button class="btn" onclick="startSelection()">Configurar Bolsa</button>
-    </div>
+<div id="scr-setup" class="screen" style="justify-content: center;">
+    <h2 style="margin-bottom: 20px;">Jugadores Base</h2>
+    <input type="number" id="p-count" value="7" min="5" max="18" style="width: 100px; padding: 15px; font-size: 2.5rem; background: #000; color: #fff; border: 2px solid var(--purple-light); border-radius: 15px; text-align: center; margin-bottom: 30px;">
+    <button class="btn" onclick="startSelection()">Configurar Bolsa</button>
+</div>
 
-    <div id="scr-selection" class="screen">
-        <h2 id="total-bag-info" style="color: var(--accent); margin-bottom: 10px;">Bolsa: 0 / 7</h2>
-        <div id="dynamic-configs" style="width: 100%;"></div>
-        <div class="selection-container">
-            <div id="sections-wrapper"></div>
-        </div>
-        <button id="btn-confirm-bag" class="btn" disabled onclick="finalizeSetup()">Confirmar Bolsa</button>
+<div id="scr-selection" class="screen">
+    <h2 id="total-bag-info" style="color: var(--accent); margin-bottom: 10px;">Bolsa: 0 / 7</h2>
+    <div id="dynamic-configs" style="width: 100%;"></div>
+    <div class="selection-container">
+        <div id="sections-wrapper"></div>
     </div>
+    <button id="btn-confirm-bag" class="btn" disabled onclick="finalizeSetup()">Confirmar Bolsa</button>
+</div>
 
-    <div id="scr-draw" class="screen" onclick="handleDraw()">
+<div id="scr-draw" class="screen" onclick="handleDraw()">
     <div id="draw-prompt" style="text-align: center;">
         <img src="https://villacuervos.es/img/main-logo.png" alt="Logo" style="width: 180px;">
-        <p style="font-family: 'Cinzel', serif; margin-top: 25px; color: #888; font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase;">
-            TOCA PARA REVELAR
-        </p>
+        <p style="font-family: 'Cinzel', serif; margin-top: 25px; color: #888; font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase;">TOCA PARA REVELAR</p>
     </div>
-
     <div id="draw-reveal" style="display:none; flex-direction: column; align-items: center; justify-content: center;">
         <div id="token-frame" class="token-display"></div>
-        <p style="font-family: 'Cinzel', serif; margin-top: 25px; color: #888; font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase;">
-            TOCA PARA OCULTAR
-        </p>
+        <p style="font-family: 'Cinzel', serif; margin-top: 25px; color: #888; font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase;">TOCA PARA OCULTAR</p>
     </div>
 </div>
 
-    <script>
-function loadRemoteScript(fileName) {
-    // Animación visual de carga (cambia el botón siguiente a "Cargando...")
-    const nextBtn = document.getElementById('btn-to-setup');
-    nextBtn.innerText = "Cargando...";
-    
-    fetch(fileName)
-        .then(response => {
-            if (!response.ok) throw new Error("Archivo no encontrado");
-            return response.json();
-        })
-        .then(data => {
-            scriptData = data.filter(i => i.id !== "_meta");
-            nextBtn.disabled = false;
-            nextBtn.innerText = "Siguiente";
-            // Pasamos directamente a la pantalla de configuración de jugadores
-            switchScreen('scr-setup');
-        })
-        .catch(err => {
-            alert("Error: Asegúrate de que el archivo " + fileName + " esté en tu GitHub.");
-            nextBtn.innerText = "Siguiente";
-            console.error(err);
-        });
-}
-        const DB = {
+<script>
+    let scriptData = []; let playerCount = 7; let baseDist = {}; let selectedRoles = new Set();
+    let drunkSelected = false; let manualMods = { godfather: 0, balloonist: 0, hermit: 0, xaan: 0, typhon: 0, typhon_outsiders: 0, villageidiot: 0 };
+    let drawPile = []; let revealed = false;
+
+    const DB = {
         townsfolk: ['acrobat', 'alchemist', 'alsaahir', 'amnesiac', 'artist', 'atheist', 'balloonist', 'banshee', 'bountyhunter', 'cannibal', 'chambermaid', 'chef', 'choirboy', 'clockmaker', 'courtier', 'cultleader', 'dreamer', 'empath', 'engineer', 'exorcist', 'farmer', 'fisherman', 'flowergirl', 'fool', 'fortuneteller', 'gambler', 'general', 'gossip', 'grandmother', 'highpriestess', 'huntsman', 'innkeeper', 'investigator', 'juggler', 'king', 'knight', 'librarian', 'lycanthrope', 'magician', 'mathematician', 'mayor', 'minstrel', 'monk', 'nightwatchman', 'noble', 'oracle', 'pacifist', 'philosopher', 'pixie', 'poppygrower', 'preacher', 'princess', 'professor', 'ravenkeeper', 'sage', 'sailor', 'savant', 'seamstress', 'shugenja', 'slayer', 'snakecharmer', 'soldier', 'steward', 'tealady', 'towncrier', 'undertaker', 'villageidiot', 'virgin', 'washerwoman'],
         outsiders: ['barber', 'butler', 'damsel', 'drunk', 'golem', 'goon', 'hatter', 'heretic', 'hermit', 'klutz', 'lunatic', 'moonchild', 'mutant', 'ogre', 'plaguedoctor', 'politician', 'puzzlemaster', 'recluse', 'saint', 'snitch', 'sweetheart', 'tinker', 'zealot'],
         minions: ['assassin', 'baron', 'boffin', 'boomdandy', 'cerenovus', 'devilsadvocate', 'eviltwin', 'fearmonger', 'goblin', 'godfather', 'harpy', 'marionette', 'mastermind', 'mezepheles', 'organgrinder', 'pithag', 'poisoner', 'psychopath', 'scarletwoman', 'spy', 'summoner', 'vizier', 'widow', 'witch', 'wizard', 'wraith', 'xaan'],
@@ -188,172 +126,136 @@ function loadRemoteScript(fileName) {
         travelers: ['apprentice', 'barista', 'beggar', 'bishop', 'bonecollector', 'bureaucrat', 'butcher', 'cacklejack', 'deviant', 'gangster', 'gnome', 'gunslinger', 'harlot', 'judge', 'matron', 'scapegoat', 'thief', 'voudon']
     };
 
-        const TRADUCCIONES = {
-        acrobat: "Acróbata", alchemist: "Alquimista", alsaahir: "Alsaahir", amnesiac: "Amnésico", artist: "Artista", atheist: "Ateo", balloonist: "Aeronauta", banshee: "Banshee", bountyhunter: "Cazarrecompensas", cannibal: "Caníbal", chambermaid: "Sirvienta", chef: "Chef", choirboy: "Niño del Coro", clockmaker: "Relojero", courtier: "Cortesano", cultleader: "Líder de Culto", dreamer: "Soñador", empath: "Empático", engineer: "Ingeniero", exorcist: "Exorcista", farmer: "Granjero", fisherman: "Pescador", flowergirl: "Florista", fool: "Bufón", fortuneteller: "Pitonisa", gambler: "Tahúr", general: "General", gossip: "Chismoso", grandmother: "Abuela", highpriestess: "Suma Sacerdotisa", huntsman: "Cazador", innkeeper: "Posadero", investigator: "Investigador", juggler: "Malabarista", king: "Rey", knight: "Caballero", librarian: "Bibliotecario", lycanthrope: "Licántropo", magician: "Mago", mathematician: "Matemático", mayor: "Alcalde", minstrel: "Juglar", monk: "Monje", nightwatchman: "Sereno", noble: "Noble", oracle: "Oráculo", pacifist: "Pacifista", philosopher: "Filósofo", pixie: "Duendecillo", poppygrower: "Cultivador de Opio", preacher: "Predicador", princess: "Princesa", professor: "Profesor", ravenkeeper: "Guardián de Cuervos", sage: "Sabio", sailor: "Marinero", savant: "Erudito", seamstress: "Costurera", shugenja: "Shugenja", slayer: "Exterminador", snakecharmer: "Encantador de Serpientes", soldier: "Soldado", steward: "Administrador", tealady: "Dama del Té", towncrier: "Pregonero", undertaker: "Enterrador", villageidiot: "Tonto del Pueblo", virgin: "Virgen", washerwoman: "Lavandera",
-        barber: "Barbero", butler: "Mayordomo", damsel: "Damisela", drunk: "Borracho", golem: "Gólem", goon: "Matón", hatter: "Sombrerero", heretic: "Hereje", hermit: "Ermitaño", klutz: "Patoso", lunatic: "Lunático", moonchild: "Niña de la Luna", mutant: "Mutante", ogre: "Ogro", plaguedoctor: "Doctor de Plaga", politician: "Político", puzzlemaster: "Maestro del Puzle", recluse: "Recluso", saint: "Santo", snitch: "Soplón", sweetheart: "Adorable", tinker: "Manitas", zealot: "Fanático",
-        assassin: "Asesino", baron: "Barón", boffin: "Rata de Laboratorio", boomdandy: "Boomdandy", cerenovus: "Cerenovus", devilsadvocate: "Abogado del Diablo", eviltwin: "Gemela Malvada", fearmonger: "Sembrador de Miedo", goblin: "Goblin", godfather: "Padrino", harpy: "Arpía", marionette: "Marioneta", mastermind: "Mente Maestra", mezepheles: "Mezepheles", organgrinder: "Organillero", pithag: "Pit Hag", poisoner: "Envenenador", psychopath: "Psicópata", scarletwoman: "Mujer Escarlata", spy: "Espía", summoner: "Invocador", vizier: "Visir", widow: "Viuda", witch: "Bruja", wizard: "Hechicero", wraith: "Espectro", xaan: "Xaan", 
-        alhadikhia: "Al-Hadikhia", fanggu: "Fang Gu", imp: "Diablillo", kazali: "Kazali", legion: "Legión", leviathan: "Leviatán", lilmonsta: "Lil' Monsta", lleech: "Lleech", lordoftyphon: "Señor de Typhon", nodashii: "No Dashii", ojo: "Ojo", po: "Po", pukka: "Pukka", riot: "Riot", shabaloth: "Shabaloth", vigormortis: "Vigormortis", vortox: "Vortox", yaggababble: "Yaggababble", zombuul: "Zombuul", 
-        apprentice: "Aprendiz", barista: "Barista", beggar: "Mendigo", bishop: "Obispo", bonecollector: "Coleccionista de Huesos", bureaucrat: "Burócrata", butcher: "Carnicero", cacklejack: "Risistencia", deviant: "Pervertido", gangster: "Gánster", gnome: "Gnomo", gunslinger: "Pistolero", harlot: "Meretriz", judge: "Juez", matron: "Institutriz", scapegoat: "Chivo Expiatorio", thief: "Ladrón", voudon: "Voudon"
+    const TRADUCCIONES = {
+        acrobat: "Acróbata", alchemist: "Alquimista", alsaahir: "Alsaahir", amnesiac: "Amnésico", artist: "Artista", atheist: "Ateo", balloonist: "Aeronauta", banshee: "Banshee", bountyhunter: "Cazarrecompensas", cannibal: "Caníbal", chambermaid: "Sirvienta", chef: "Chef", choirboy: "Niño del Coro", clockmaker: "Relojero", courtier: "Cortesano", cultleader: "Líder de Culto", dreamer: "Soñador", empath: "Empático", engineer: "Ingeniero", exorcist: "Exorcista", farmer: "Granjero", fisherman: "Pescador", flowergirl: "Florista", fool: "Bufón", fortuneteller: "Pitonisa", gambler: "Tahúr", general: "General", gossip: "Chismoso", grandmother: "Abuela", highpriestess: "Suma Sacerdotisa", huntsman: "Cazador", innkeeper: "Posadero", investigator: "Investigador", juggler: "Malabarista", king: "Rey", knight: "Caballero", librarian: "Bibliotecario", lycanthrope: "Licántropo", magician: "Mago", mathematician: "Matemático", mayor: "Alcalde", minstrel: "Juglar", monk: "Monje", nightwatchman: "Sereno", noble: "Noble", oracle: "Oráculo", pacifist: "Pacifista", philosopher: "Filósofo", pixie: "Duendecillo", poppygrower: "Cultivador de Opio", preacher: "Predicador", princess: "Princesa", professor: "Profesor", ravenkeeper: "Guardián de Cuervos", sage: "Sabio", sailor: "Marinero", savant: "Erudito", seamstress: "Costurera", shugenja: "Shugenja", slayer: "Exterminador", snakecharmer: "Encantador de Serpientes", soldier: "Soldado", steward: "Administrador", tealady: "Dama del Té", towncrier: "Pregonero", undertaker: "Enterrador", villageidiot: "Tonto del Pueblo", virgin: "Virgen", washerwoman: "Lavandera", barber: "Barbero", butler: "Mayordomo", damsel: "Damisela", drunk: "Borracho", golem: "Gólem", goon: "Matón", hatter: "Sombrerero", heretic: "Hereje", hermit: "Ermitaño", klutz: "Patoso", lunatic: "Lunático", moonchild: "Niña de la Luna", mutant: "Mutante", ogre: "Ogro", plaguedoctor: "Doctor de Plaga", politician: "Político", puzzlemaster: "Maestro del Puzle", recluse: "Recluso", saint: "Santo", snitch: "Soplón", sweetheart: "Adorable", tinker: "Manitas", zealot: "Fanático", assassin: "Asesino", baron: "Barón", boffin: "Rata de Laboratorio", boomdandy: "Boomdandy", cerenovus: "Cerenovus", devilsadvocate: "Abogado del Diablo", eviltwin: "Gemela Malvada", fearmonger: "Sembrador de Miedo", goblin: "Goblin", godfather: "Padrino", harpy: "Arpía", marionette: "Marioneta", mastermind: "Mente Maestra", mezepheles: "Mezepheles", organgrinder: "Organillero", pithag: "Pit Hag", poisoner: "Envenenador", psychopath: "Psicópata", scarletwoman: "Mujer Escarlata", spy: "Espía", summoner: "Invocador", vizier: "Visir", widow: "Viuda", witch: "Bruja", wizard: "Hechicero", wraith: "Espectro", xaan: "Xaan", alhadikhia: "Al-Hadikhia", fanggu: "Fang Gu", imp: "Diablillo", kazali: "Kazali", legion: "Legión", leviathan: "Leviatán", lilmonsta: "Lil' Monsta", lleech: "Lleech", lordoftyphon: "Señor de Typhon", nodashii: "No Dashii", ojo: "Ojo", po: "Po", pukka: "Pukka", riot: "Riot", shabaloth: "Shabaloth", vigormortis: "Vigormortis", vortox: "Vortox", yaggababble: "Yaggababble", zombuul: "Zombuul", apprentice: "Aprendiz", barista: "Barista", beggar: "Mendigo", bishop: "Obispo", bonecollector: "Coleccionista de Huesos", bureaucrat: "Burócrata", butcher: "Carnicero", cacklejack: "Risistencia", deviant: "Pervertido", gangster: "Gánster", gnome: "Gnomo", gunslinger: "Pistolero", harlot: "Meretriz", judge: "Juez", matron: "Institutriz", scapegoat: "Chivo Expiatorio", thief: "Ladrón", voudon: "Voudon"
     };
-        let scriptData = []; let playerCount = 7; let baseDist = {}; let selectedRoles = new Set();
-        let drunkSelected = false; let manualMods = { godfather: 0, balloonist: 0, hermit: 0, xaan: 0, typhon: 0, typhon_outsiders: 0, villageidiot: 0 };
-        let drawPile = []; let revealed = false;
 
-        document.getElementById('file-input').addEventListener('change', (e) => {
-            const reader = new FileReader();
-            reader.onload = (ev) => { scriptData = JSON.parse(ev.target.result).filter(i => i.id !== "_meta"); document.getElementById('btn-to-setup').disabled = false; };
-            reader.readAsText(e.target.files[0]);
+    function loadRemoteScript(fileName) {
+        const nextBtn = document.getElementById('btn-to-setup');
+        nextBtn.innerText = "Cargando...";
+        fetch(fileName)
+            .then(response => { if (!response.ok) throw new Error(); return response.json(); })
+            .then(data => {
+                scriptData = data.filter(i => i.id !== "_meta");
+                nextBtn.disabled = false;
+                nextBtn.innerText = "Siguiente";
+                switchScreen('scr-setup');
+            })
+            .catch(() => { alert("Error al cargar script"); nextBtn.innerText = "Siguiente"; });
+    }
+
+    document.getElementById('file-input').addEventListener('change', (e) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => { scriptData = JSON.parse(ev.target.result).filter(i => i.id !== "_meta"); document.getElementById('btn-to-setup').disabled = false; };
+        reader.readAsText(e.target.files[0]);
+    });
+
+    function startSelection() {
+        let val = parseInt(document.getElementById('p-count').value); playerCount = Math.min(Math.max(val, 5), 18);
+        if(playerCount == 5) baseDist = {t:3, o:0, m:1, d:1}; else if(playerCount == 6) baseDist = {t:3, o:1, m:1, d:1}; else if(playerCount == 7) baseDist = {t:5, o:0, m:1, d:1}; else if(playerCount == 8) baseDist = {t:5, o:1, m:1, d:1}; else if(playerCount == 9) baseDist = {t:5, o:2, m:1, d:1}; else if(playerCount == 10) baseDist = {t:7, o:0, m:2, d:1}; else if(playerCount == 11) baseDist = {t:7, o:1, m:2, d:1}; else if(playerCount == 12) baseDist = {t:7, o:2, m:2, d:1}; else if(playerCount == 13) baseDist = {t:9, o:0, m:3, d:1}; else if(playerCount == 14) baseDist = {t:9, o:1, m:3, d:1}; else if(playerCount == 15) baseDist = {t:9, o:2, m:3, d:1}; else { baseDist = {t:11, o:playerCount-16, m:4, d:1}; }
+        selectedRoles.clear(); drunkSelected = false; updateUI(); switchScreen('scr-selection');
+    }
+
+    function updateUI() {
+        const wrapper = document.getElementById('sections-wrapper'); const configWrapper = document.getElementById('dynamic-configs');
+        wrapper.innerHTML = ""; configWrapper.innerHTML = "";
+        let modO = 0; let modT = 0; let modM = 0; let modD = 0;
+        const ids = Array.from(selectedRoles).map(r => r.id.toLowerCase().replace(/[-_]/g,''));
+        
+        if (ids.includes('atheist')) { modT += (baseDist.m + baseDist.d); modM -= baseDist.m; modD -= baseDist.d; }
+        if (ids.includes('godfather')) { createPanel("PADRINO", "Mod. Forastero:", "godfather", [-1, 1], "panel-evil"); modO += manualMods.godfather; modT -= manualMods.godfather; }
+        if (ids.includes('baron')) { modO += 2; modT -= 2; }
+        if (drunkSelected) modT += 1;
+
+        let finalOutsiders = Math.max(0, baseDist.o + modO);
+        const needed = { townsfolk: baseDist.t + modT, outsiders: finalOutsiders, minions: baseDist.m + modM, demons: baseDist.d + modD };
+
+        ['townsfolk', 'outsiders', 'minions', 'demons', 'travelers'].forEach(type => {
+            const roles = scriptData.filter(r => DB[type].includes(r.id.toLowerCase().replace(/[-_]/g,'')));
+            if (roles.length === 0) return;
+            let selInType = Array.from(selectedRoles).filter(r => DB[type].includes(r.id.toLowerCase().replace(/[-_]/g,'')));
+            let count = selInType.length + (type === 'outsiders' && drunkSelected ? 1 : 0);
+            
+            const section = document.createElement('div'); section.className = 'type-section';
+            let badgeHTML = (type === 'travelers') ? `<span class="count-badge count-ok">${selInType.length}</span>` : `<span class="count-badge ${count === needed[type] ? 'count-ok' : 'count-pending'}">${count} / ${needed[type]}</span>`;
+            section.innerHTML = `<div class="type-info"><span class="type-header">${type}</span>${badgeHTML}</div>`;
+            
+            const grid = document.createElement('div'); grid.className = 'role-grid';
+            roles.forEach(role => {
+                const id = role.id.toLowerCase().replace(/[-_]/g,'');
+                const item = document.createElement('div');
+                let isSel = (id === 'drunk') ? drunkSelected : selectedRoles.has(role);
+                item.className = `role-item ${isSel ? (id === 'drunk' ? 'special-selected' : 'selected') : ''}`;
+                item.innerText = TRADUCCIONES[id] || role.id;
+                item.onclick = () => { if(id === 'drunk') drunkSelected = !drunkSelected; else (selectedRoles.has(role) ? selectedRoles.delete(role) : selectedRoles.add(role)); updateUI(); };
+                grid.appendChild(item);
+            });
+            section.appendChild(grid); wrapper.appendChild(section);
         });
 
-        function startSelection() {
-            let val = parseInt(document.getElementById('p-count').value); playerCount = Math.min(Math.max(val, 5), 18); document.getElementById('p-count').value = playerCount;
-            if(playerCount == 5) baseDist = {t:3, o:0, m:1, d:1}; else if(playerCount == 6) baseDist = {t:3, o:1, m:1, d:1}; else if(playerCount == 7) baseDist = {t:5, o:0, m:1, d:1}; else if(playerCount == 8) baseDist = {t:5, o:1, m:1, d:1}; else if(playerCount == 9) baseDist = {t:5, o:2, m:1, d:1}; else if(playerCount == 10) baseDist = {t:7, o:0, m:2, d:1}; else if(playerCount == 11) baseDist = {t:7, o:1, m:2, d:1}; else if(playerCount == 12) baseDist = {t:7, o:2, m:2, d:1}; else if(playerCount == 13) baseDist = {t:9, o:0, m:3, d:1}; else if(playerCount == 14) baseDist = {t:9, o:1, m:3, d:1}; else if(playerCount == 15) baseDist = {t:9, o:2, m:3, d:1}; else { baseDist = {t:11, o:playerCount-16, m:4, d:1}; }
-            selectedRoles.clear(); drunkSelected = false; Object.keys(manualMods).forEach(k => manualMods[k] = 0); updateUI(); switchScreen('scr-selection');
-        }
-
-        function updateUI() {
-            const wrapper = document.getElementById('sections-wrapper'); const configWrapper = document.getElementById('dynamic-configs');
-            wrapper.innerHTML = ""; configWrapper.innerHTML = "";
-            let modO = 0; let modT = 0; let modM = 0; let modD = 0;
-            const ids = Array.from(selectedRoles).map(r => r.id.toLowerCase().replace(/[-_]/g,''));
-            if (ids.includes('atheist')) { modT += (baseDist.m + baseDist.d); modM -= baseDist.m; modD -= baseDist.d; }
-            if (ids.includes('summoner')) { modD -= 1; modT += 1; }
-            if (ids.includes('kazali')) { modT += baseDist.m; modM -= baseDist.m; }
-            if (ids.includes('lilmonsta')) { modM += 1; modT -= 1; }
-            if (ids.includes('godfather')) { createPanel("PADRINO", "Mod. Forastero:", "godfather", [-1, 1], "panel-evil"); modO += manualMods.godfather; modT -= manualMods.godfather; }
-            if (ids.includes('balloonist')) { createPanel("AERONAUTA", "Mod. Forastero:", "balloonist", [-1, 1], "panel-good"); modO += manualMods.balloonist; modT -= manualMods.balloonist; }
-            if (ids.includes('hermit')) { createPanel("ERMITAÑO", "Mod. Forastero:", "hermit", [-1, 1], "panel-info"); modO += manualMods.hermit; modT -= manualMods.hermit; }
-            if (ids.includes('xaan')) { createPanel("XAAN", "Forasteros extra:", "xaan", [0, 1, 2, 3], "panel-evil"); modO += manualMods.xaan; modT -= manualMods.xaan; }
-            if (ids.includes('villageidiot')) { createPanel("TONTO DEL PUEBLO", "Composición:", "villageidiot", [0, 2], "panel-good"); }
-            if (ids.includes('lordoftyphon')) { createPanel("TYPHON", "Esbirro extra:", "typhon", [0, 1], "panel-evil"); createPanel("TYPHON", "Forasteros extra:", "typhon_outsiders", [0, 1, 2, 3], "panel-evil"); modM += manualMods.typhon; modT -= manualMods.typhon; modO += manualMods.typhon_outsiders; modT -= manualMods.typhon_outsiders; }
-            if (ids.includes('baron')) { modO += 2; modT -= 2; }
-            if (ids.includes('fanggu')) { modO += 1; modT -= 1; }
-            if (ids.includes('vigormortis')) { modO -= 1; modT += 1; }
-            if (drunkSelected) modT += 1;
-            let finalOutsiders = Math.max(0, baseDist.o + modO);
-            const needed = { townsfolk: baseDist.t + modT, outsiders: finalOutsiders, minions: baseDist.m + modM, demons: baseDist.d + modD };
-            ['townsfolk', 'outsiders', 'minions', 'demons', 'travelers'].forEach(type => {
-                const roles = scriptData.filter(r => DB[type].includes(r.id.toLowerCase().replace(/[-_]/g,''))); if (roles.length === 0) return;
-                let selInType = Array.from(selectedRoles).filter(r => DB[type].includes(r.id.toLowerCase().replace(/[-_]/g,'')));
-                let count = selInType.length + (type === 'outsiders' && drunkSelected ? 1 : 0);
-                const section = document.createElement('div'); section.className = 'type-section';
-                let badgeHTML = (type === 'travelers') ? `<span class="count-badge count-ok">${selInType.length}</span>` : `<span class="count-badge ${count === needed[type] ? 'count-ok' : 'count-pending'}">${count} / ${needed[type]}</span>`;
-                section.innerHTML = `<div class="type-info"><span class="type-header">${type}</span>${badgeHTML}</div>`;
-                const grid = document.createElement('div'); grid.className = 'role-grid';
-                roles.forEach(role => {
-                    const id = role.id.toLowerCase().replace(/[-_]/g,''); const item = document.createElement('div');
-                    let isSel = (id === 'drunk') ? drunkSelected : selectedRoles.has(role);
-                    item.className = `role-item ${isSel ? (id === 'drunk' ? 'special-selected' : 'selected') : ''}`;
-                    item.innerText = TRADUCCIONES[id] || role.id;
-                    item.onclick = () => { id === 'drunk' ? drunkSelected = !drunkSelected : (selectedRoles.has(role) ? selectedRoles.delete(role) : selectedRoles.add(role)); updateUI(); };
-                    grid.appendChild(item);
-                });
-                section.appendChild(grid); wrapper.appendChild(section);
-            });
         let totalInBag = selectedRoles.size + (drunkSelected ? 1 : 0);
         const numTravelers = Array.from(selectedRoles).filter(r => DB.travelers.includes(r.id.toLowerCase().replace(/[-_]/g,''))).length;
         document.getElementById('total-bag-info').innerText = `Jugadores: ${playerCount} + ${numTravelers} Viajeros (Total: ${totalInBag})`;
         document.getElementById('btn-confirm-bag').disabled = totalInBag < playerCount;
-        const ids = Array.from(selectedRoles).map(r => r.id.toLowerCase().replace(/[-_]/g,'')); 
         checkInclusionAlerts(ids);
-}
-
-        function createPanel(title, text, key, options, cssClass) {
-            const panel = document.createElement('div'); panel.className = `config-panel ${cssClass}`; panel.innerHTML = `<div><b>${title}:</b> ${text}</div>`;
-            const optsDiv = document.createElement('div'); optsDiv.className = "gf-options";
-            options.forEach(opt => { const btn = document.createElement('button'); btn.className = `gf-btn ${manualMods[key] === opt ? 'active' : ''}`; btn.innerText = (key === 'villageidiot') ? (opt === 0 ? "1 TONTO" : "3 TONTOS") : (opt > 0 ? `+${opt}` : opt); btn.onclick = () => { manualMods[key] = opt; updateUI(); }; optsDiv.appendChild(btn); });
-            panel.appendChild(optsDiv); document.getElementById('dynamic-configs').appendChild(panel);
-        }
-        function checkInclusionAlerts(ids) {
-            if (ids.includes('huntsman') && !ids.includes('damsel')) addAlert("⚠️ <b>CAZADOR:</b> Añade a la <b>DAMISELA</b>.");
-            if (ids.includes('choirboy') && !ids.includes('king')) addAlert("⚠️ <b>NIÑO DEL CORO:</b> Añade al <b>REY</b>.");
-        }
-        function addAlert(txt) { const a = document.createElement('div'); a.className = "config-panel panel-info"; a.innerHTML = txt; document.getElementById('dynamic-configs').prepend(a); }
-
-        function finalizeSetup() {
-    let bag = Array.from(selectedRoles);    
-    
-    // Si el Borracho está seleccionado, añadimos su ficha físicamente a la bolsa [cite: 5]
-    if (drunkSelected) {
-        bag.push({ id: 'drunk' });
-    }
-    
-    const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
-    // ... resto de la lógica del Village Idiot ...
-    drawPile = bag.sort(() => 0.5 - Math.random()); 
-    switchScreen('scr-draw');
-}
-    
-    const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
-    
-    // Lógica del Tonto del Pueblo
-    if (ids.includes('villageidiot') && manualMods.villageidiot === 2) {
-        const t = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'villageidiot');
-        bag.push(t, t); 
-        let rem = 0;
-        for (let i = bag.length - 1; i >= 0 && rem < 2; i--) { 
-            let rid = bag[i].id.toLowerCase().replace(/[-_]/g,''); 
-            if (DB.townsfolk.includes(rid) && rid !== 'villageidiot') { 
-                bag.splice(i, 1); 
-                rem++; 
-            } 
-        } 
     }
 
-    // Mezcla y paso a la pantalla de sorteo
-    drawPile = bag.sort(() => 0.5 - Math.random()); 
-    switchScreen('scr-draw');
-}
-        function handleDraw() {
-        if (!revealed) {
-        if (drawPile.length === 0) return location.reload();        
-        const role = drawPile.pop(); 
-        const id = role.id.toLowerCase().replace(/[-_]/g,''); 
-        const isEvil = DB.minions.concat(DB.demons).includes(id);
-        const name = TRADUCCIONES[id] || role.id.toUpperCase();        
-        const frame = document.getElementById('token-frame'); 
-        frame.className = 'token-display ' + (isEvil ? 'red-glow' : 'blue-glow');
+    function createPanel(title, text, key, options, cssClass) {
+        const panel = document.createElement('div'); panel.className = `config-panel ${cssClass}`; panel.innerHTML = `<div><b>${title}:</b> ${text}</div>`;
+        const optsDiv = document.createElement('div'); optsDiv.className = "gf-options";
+        options.forEach(opt => {
+            const btn = document.createElement('button'); btn.className = `gf-btn ${manualMods[key] === opt ? 'active' : ''}`;
+            btn.innerText = opt > 0 ? `+${opt}` : opt;
+            btn.onclick = () => { manualMods[key] = opt; updateUI(); };
+            optsDiv.appendChild(btn);
+        });
+        panel.appendChild(optsDiv); document.getElementById('dynamic-configs').appendChild(panel);
+    }
 
-        // Configuración del arco
-        const radio = 92; 
-        const centro = 150;
-        const inicioX = centro - radio; 
-        const finX = centro + radio;    
+    function checkInclusionAlerts(ids) {
+        if (ids.includes('huntsman') && !ids.includes('damsel')) addAlert("⚠️ CAZADOR: Añade a la DAMISELA.");
+        if (ids.includes('choirboy') && !ids.includes('king')) addAlert("⚠️ NIÑO DEL CORO: Añade al REY.");
+    }
 
-        // Ajuste automático de fuente por longitud de nombre
-        const fontSize = name.length > 14 ? "20" : "28";
+    function addAlert(txt) { const a = document.createElement('div'); a.className = "config-panel panel-info"; a.innerHTML = txt; document.getElementById('dynamic-configs').prepend(a); }
 
-        // Inserción del HTML
-        frame.innerHTML = `
-            <svg class="curved-name-svg" viewBox="0 0 300 300">
-                <path id="curve" d="M ${inicioX},${centro} A ${radio},${radio} 0 1,1 ${finX},${centro}" fill="transparent" />
-                <text font-size="${fontSize}">
-                    <textPath href="#curve" startOffset="50%" text-anchor="middle">
-                        ${name}
-                    </textPath>
-                </text>
-            </svg>
-            <img id="t-img" src="img/${id}.png" alt="Token">`;
-                
-        const img = document.getElementById('t-img'); 
-        img.onerror = function() { 
-            this.src = `https://villacuervos.es/media/roles/carousel/townsfolk/${id}.png`; 
-            this.onerror = () => { 
-                this.src = `https://villacuervos.es/media/roles/carousel/demon/${id}.png`; 
-                this.onerror = () => this.src = `https://wiki.bloodontheclocktower.com/Special:FilePath/Icon_${role.id}.png`; 
-            }; 
-        };
+    function finalizeSetup() {
+        let bag = Array.from(selectedRoles);
+        if (drunkSelected) bag.push({ id: 'drunk' });
         
-        document.getElementById('draw-prompt').style.display = 'none'; 
-        document.getElementById('draw-reveal').style.display = 'flex'; 
-        revealed = true;
-    } else { 
-        document.getElementById('draw-prompt').style.display = 'flex'; 
-        document.getElementById('draw-reveal').style.display = 'none'; 
-        revealed = false; 
+        const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
+        if (ids.includes('villageidiot') && manualMods.villageidiot === 2) {
+            const t = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'villageidiot');
+            bag.push(t, t); let rem = 0;
+            for (let i = bag.length - 1; i >= 0 && rem < 2; i--) {
+                let rid = bag[i].id.toLowerCase().replace(/[-_]/g,'');
+                if (DB.townsfolk.includes(rid) && rid !== 'villageidiot') { bag.splice(i, 1); rem++; }
+            }
+        }
+        drawPile = bag.sort(() => 0.5 - Math.random()); switchScreen('scr-draw');
     }
-}
-        function switchScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-    </script>
+
+    function handleDraw() {
+        if (!revealed) {
+            if (drawPile.length === 0) return location.reload();
+            const role = drawPile.pop(); const id = role.id.toLowerCase().replace(/[-_]/g,'');
+            const isEvil = DB.minions.concat(DB.demons).includes(id);
+            const name = TRADUCCIONES[id] || role.id.toUpperCase();
+            const frame = document.getElementById('token-frame');
+            frame.className = 'token-display ' + (isEvil ? 'red-glow' : 'blue-glow');
+            const radio = 92; const centro = 150; const inicioX = centro - radio; const finX = centro + radio;
+            const fontSize = name.length > 14 ? "20" : "28";
+            frame.innerHTML = `<svg class="curved-name-svg" viewBox="0 0 300 300"><path id="curve" d="M ${inicioX},${centro} A ${radio},${radio} 0 1,1 ${finX},${centro}" fill="transparent" /><text font-size="${fontSize}"><textPath href="#curve" startOffset="50%" text-anchor="middle">${name}</textPath></text></svg><img id="t-img" src="img/${id}.png" alt="Token">`;
+            const img = document.getElementById('t-img');
+            img.onerror = function() {
+                this.src = `https://villacuervos.es/media/roles/carousel/townsfolk/${id}.png`;
+                this.onerror = () => { this.src = `https://villacuervos.es/media/roles/carousel/demon/${id}.png`; this.onerror = () => this.src = `https://wiki.bloodontheclocktower.com/Special:FilePath/Icon_${role.id}.png`; };
+            };
+            document.getElementById('draw-prompt').style.display = 'none'; document.getElementById('draw-reveal').style.display = 'flex'; revealed = true;
+        } else { document.getElementById('draw-prompt').style.display = 'flex'; document.getElementById('draw-reveal').style.display = 'none'; revealed = false; }
+    }
+
+    function switchScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+</script>
 </body>
 </html>
