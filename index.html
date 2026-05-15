@@ -244,7 +244,7 @@
             const frame = document.getElementById('token-frame');
             frame.className = 'token-display ' + (isEvil ? 'red-glow' : 'blue-glow');
             const radio = 92; const centro = 150; const inicioX = centro - radio; const finX = centro + radio;
-            const fontSize = name.length > 14 ? "20" : "28";
+            const fontSize = name.length > 16 ? "18" : "28";
             frame.innerHTML = `<svg class="curved-name-svg" viewBox="0 0 300 300"><path id="curve" d="M ${inicioX},${centro} A ${radio},${radio} 0 1,1 ${finX},${centro}" fill="transparent" /><text font-size="${fontSize}"><textPath href="#curve" startOffset="50%" text-anchor="middle">${name}</textPath></text></svg><img id="t-img" src="img/${id}.png" alt="Token">`;
             const img = document.getElementById('t-img');
             img.onerror = function() {
