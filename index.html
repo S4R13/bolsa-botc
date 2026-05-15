@@ -76,8 +76,8 @@
         .red-glow { box-shadow: 0 0 50px 15px var(--evil-red); }
         .curved-name-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 3; top:0; left:0; }
         .curved-name-svg text { font-family: 'Dumbledor', serif; fill: #000000 !important; 
-            stroke: rgba(255, 255, 255, 0.4); /* El relieve claro */
-            stroke-width: 1.0px; 
+            stroke: rgba(255, 255, 255, 0.6); /* El relieve claro */
+            stroke-width: 1.2px; 
             text-transform: uppercase; 
             letter-spacing: 1.5px; 
             font-weight: normal; 
@@ -286,7 +286,7 @@ function loadRemoteScript(fileName) {
         frame.className = 'token-display ' + (isEvil ? 'red-glow' : 'blue-glow');
 
         // Configuración del arco
-        const radio = 95; 
+        const radio = 90; 
         const centro = 150;
         const inicioX = centro - radio; 
         const finX = centro + radio;    
