@@ -76,19 +76,14 @@
         .red-glow { box-shadow: 0 0 50px 15px var(--evil-red); }
         .curved-name-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 3; top:0; left:0; }
         .curved-name-svg text { 
+.curved-name-svg text { 
     font-family: 'Dumbledor', serif; 
-    fill: #000000 !important; /* Negro tinta */
-    
-    /* El truco mágico: el borde se dibuja DEBAJO del negro */
+    fill: #000000 !important; 
     paint-order: stroke fill;
-    stroke: rgba(255, 255, 255, 0.6); /* Brillo de borde de madera */
-    stroke-width: 5.0px; /* Ahora sí puedes subir el grosor sin miedo */
-    
-    /* Sombra de profundidad */
-    /* filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.8)); */
-    
+    stroke: rgba(255, 255, 255, 0.6); 
+    stroke-width: 1.5px; 
     text-transform: uppercase; 
-    letter-spacing: 2.5px; 
+    letter-spacing: 5.0px; 
     font-weight: 700; 
 }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -282,13 +277,18 @@ function loadRemoteScript(fileName) {
         function addAlert(txt) { const a = document.createElement('div'); a.className = "config-panel panel-info"; a.innerHTML = txt; document.getElementById('dynamic-configs').prepend(a); }
 
         function finalizeSetup() {
-        // Creamos la bolsa con TODOS los roles seleccionados (Base + Viajeros)
-        let bag = Array.from(selectedRoles);    
-        // Si hay borracho (drunk), lo añadimos (aunque visualmente sea un Townsfolk, en la bolsa es una ficha)
-        // Nota: Asegúrate de tener 'drunk' en tu lógica de IDs si lo manejas aparte    
-        const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
-        // Lógica especial para el Tonto del Pueblo (Village Idiot) si está activada la opción de 3
-        if (ids.includes('villageidiot') && manualMods.villageidiot === 2) {
+    // Creamos la bolsa con los roles del Set
+    let bag = Array.from(selectedRoles);    
+    
+    // IMPORTANTE: Añadir la ficha del Borracho si está seleccionado
+    if (drunkSelected) {
+        bag.push({ id: 'drunk' });
+    }
+    
+    const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
+    
+    // Lógica del Tonto del Pueblo
+    if (ids.includes('villageidiot') && manualMods.villageidiot === 2) {
         const t = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'villageidiot');
         bag.push(t, t); 
         let rem = 0;
@@ -301,7 +301,7 @@ function loadRemoteScript(fileName) {
         } 
     }
 
-    // Mezclamos la bolsa completa. El tamaño de drawPile será el total de fichas a repartir.
+    // Mezcla y paso a la pantalla de sorteo
     drawPile = bag.sort(() => 0.5 - Math.random()); 
     switchScreen('scr-draw');
 }
