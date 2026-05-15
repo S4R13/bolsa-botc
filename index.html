@@ -75,13 +75,18 @@
         .blue-glow { box-shadow: 0 0 50px 15px var(--good-blue); }
         .red-glow { box-shadow: 0 0 50px 15px var(--evil-red); }
         .curved-name-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 3; top:0; left:0; }
-        .curved-name-svg text { font-family: 'Dumbledor', serif; fill: #000000 !important; 
-            stroke: rgba(255, 255, 255, 1.0); /* El relieve claro */
-            stroke-width: 0.6px; 
-            text-transform: uppercase; 
-            letter-spacing: 1.0px; 
-            font-weight: normal; 
-        }
+        .curved-name-svg text { 
+    font-family: 'Dumbledor', serif; 
+    fill: #000000 !important; /* Negro sólido y fuerte */
+    font-weight: 900;          /* Máximo grosor de la fuente */    
+    /* TRUCO: Sombra blanca hacia abajo y negra hacia arriba para relieve */
+    text-shadow: 
+        1px 1px 0px rgba(255,255,255,0.3), 
+       -1px -1px 0px rgba(0,0,0,0.5);
+       
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
+}
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .script-card:active {
     transform: scale(0.95);
