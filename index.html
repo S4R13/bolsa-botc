@@ -171,11 +171,10 @@
         if (ids.includes('lilmonsta')) { modM += 1; modT -= 1; }
         if (ids.includes('vigormortis')) { modO -= 1; modT += 1; }
         if (ids.includes('fanggu')) { modO += 1; modT -= 1; }
-        if (drunkSelected) { modT += 1; } // El borracho demanda +1 aldeano real en mesa
-
-        // Caso Especial: Kazali (Igual a Typhon, el narrador decide tipo por tipo)
+        if (drunkSelected) { modT += 1; }
+        // CORRECCIÓN KAZALI: Actúa igual que Typhon, el narrador decide si añade Aldeano o Forastero
         if (ids.includes('kazali')) {
-            modM -= baseDist.m;
+            modM -= baseDist.m; // Quita todos los esbirros
             if (manualMods.kazali.length !== baseDist.m) {
                 manualMods.kazali = new Array(baseDist.m).fill('t');
             }
@@ -185,15 +184,15 @@
                 if (manualMods.kazali[i] === 'o') modO += 1;
             }
         }
-
-        // Caso Especial: Legión (Limpia esbirros y forasteros, mantiene Demonio intacto)
+        // CORRECCIÓN LEGIÓN: No quita demonios (ya que Legión es el demonio). Quita esbirros y forasteros.
+        let legionCount = 0;
         let legionCount = 0;
         if (ids.includes('legion')) {
             legionCount = Math.floor(playerCount / 2) + 1;
             modM = -baseDist.m;
             modO = -baseDist.o;
-            modD = 0; // NO quita demonios
-            modT = (playerCount - legionCount) - baseDist.t;
+            // No tocamos modD para mantener el espacio del demonio intacto
+            modT = (playerCount - legionCount) - baseDist.t; 
         }
 
         // Caso Especial: Señor del Typhon
@@ -213,9 +212,10 @@
         if (ids.includes('godfather')) { createPanel("PADRINO", "Mod. Forastero:", "godfather", [-1, 1], "panel-evil"); modO += manualMods.godfather; modT -= manualMods.godfather; }
         if (ids.includes('balloonist')) { createPanel("AERONAUTA", "Mod. Forastero:", "balloonist", [0, 1], "panel-good"); modO += manualMods.balloonist; modT -= manualMods.balloonist; }
         if (ids.includes('hermit')) { createPanel("ERMITAÑO", "Mod. Forastero:", "hermit", [0, -1], "panel-info"); modO += manualMods.hermit; modT -= manualMods.hermit; }
+        
+        // CORRECCIÓN TONTO DEL PUEBLO: No altera la meta requerida (modT), se mantiene en la base (ej. 9)
         if (ids.includes('villageidiot')) { 
             createPanel("TONTO DEL PUEBLO", "Composición:", "villageidiot", [0, 2], "panel-good"); 
-            // Ya no aumenta modT para mantener la meta estricta intacta
         }
 
         let finalOutsiders = Math.max(0, baseDist.o + modO);
@@ -227,12 +227,13 @@
             if (roles.length === 0) return;
             let selInType = Array.from(selectedRoles).filter(r => DB[type].includes(r.id.toLowerCase().replace(/[-_]/g,'')));
             
+            // El Borracho cuenta visualmente como Forastero para cumplir los requisitos
             let count = selInType.length;
             if (type === 'outsiders' && drunkSelected) count += 1;
-            
-            // Si hay 3 tontos activos, el contador visual de aldeanos recibe +2 (el tonto base + 2 copias)
-            if (type === 'townsfolk' && ids.includes('villageidiot') && manualMods.villageidiot === 2) count += 2;
-            
+            // CORRECCIÓN TONTO DEL PUEBLO: Al elegir 3 tontos, sumamos las 2 copias virtuales al contador seleccionado
+            if (type === 'townsfolk' && ids.includes('villageidiot') && manualMods.villageidiot === 2) {
+                count += 2;
+            }
             const section = document.createElement('div'); section.className = 'type-section';
             let badgeHTML = (type === 'travelers') ? `<span class="count-badge count-ok">${selInType.length}</span>` : `<span class="count-badge ${count === needed[type] ? 'count-ok' : 'count-pending'}">${count} / ${needed[type]}</span>`;
             section.innerHTML = `<div class="type-info"><span class="type-header">${type}</span>${badgeHTML}</div>`;
@@ -241,7 +242,7 @@
             roles.forEach(role => {
                 const id = role.id.toLowerCase().replace(/[-_]/g,'');
                 const item = document.createElement('div');
-                let isSel = (id === 'drunk' ? drunkSelected : selectedRoles.has(role));
+                let isSel = (id === 'drunk') ? drunkSelected : selectedRoles.has(role);
                 item.className = `role-item ${isSel ? (id === 'drunk' ? 'special-selected' : 'selected') : ''}`;
                 item.innerText = TRADUCCIONES[id] || role.id;
                 item.onclick = () => { if(id === 'drunk') drunkSelected = !drunkSelected; else (selectedRoles.has(role) ? selectedRoles.delete(role) : selectedRoles.add(role)); updateUI(); };
@@ -250,14 +251,20 @@
             section.appendChild(grid); wrapper.appendChild(section);
         });
 
-        // Cálculo exacto de la bolsa física final
+        // Conteo físico total de fichas en la bolsa
         let totalInBag = selectedRoles.size;
-        if (ids.includes('legion')) totalInBag += (legionCount - 1);
-        if (ids.includes('villageidiot') && manualMods.villageidiot === 2) totalInBag += 2;
-        
+        if (ids.includes('legion')) {
+            totalInBag += (legionCount - 1); // Suma las copias físicas extras de Legión
+        }
+        // CORRECCIÓN TONTO DEL PUEBLO: Añadimos las 2 copias físicas al total para habilitar el cierre correcto de la bolsa
+        if (ids.includes('villageidiot') && manualMods.villageidiot === 2) {
+            totalInBag += 2;
+        }
         const numTravelers = Array.from(selectedRoles).filter(r => DB.travelers.includes(r.id.toLowerCase().replace(/[-_]/g,''))).length;
         
         document.getElementById('total-bag-info').innerText = `Jugadores: ${playerCount} + ${numTravelers} Viajeros (Total: ${totalInBag})`;
+        
+        // Bloqueo estricto: la bolsa debe medir exactamente la suma de jugadores + viajeros
         document.getElementById('btn-confirm-bag').disabled = totalInBag !== (playerCount + numTravelers);
     }
 
@@ -291,7 +298,7 @@
 
     function createKazaliPanel(index) {
         const panel = document.createElement('div'); panel.className = "config-panel panel-evil"; 
-        panel.innerHTML = `<div><b>KAZALI (Espacio ${index + 1}):</b> Convertir esbirro en:</div>`;
+        panel.innerHTML = `<div><b>KAZALI (Espacio ${index + 1}):</b> Crear personaje extra:</div>`;
         const optsDiv = document.createElement('div'); optsDiv.className = "gf-options";
         
         const btnT = document.createElement('button'); btnT.className = `gf-btn ${manualMods.kazali[index] === 't' ? 'active' : ''}`;
@@ -315,16 +322,22 @@
         let bag = Array.from(selectedRoles);
         const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
         
+        // Multiplicación física de fichas de Legión
         if (ids.includes('legion')) {
             const legionCount = Math.floor(playerCount / 2) + 1;
             const legionRole = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'legion');
-            for (let i = 1; i < legionCount; i++) bag.push(legionRole);
+            for (let i = 1; i < legionCount; i++) {
+                bag.push(legionRole);
+            }
         }
         
+        // Multiplicación física de fichas de Tonto del Pueblo
         if (ids.includes('villageidiot') && manualMods.villageidiot === 2) {
             const t = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'villageidiot');
             bag.push(t, t); 
         }
+        
+        // El Borracho NO se inyecta aquí. El narrador ya seleccionó el Aldeano físico extra que lo reemplaza.
         
         drawPile = bag.sort(() => 0.5 - Math.random()); 
         switchScreen('scr-draw');
