@@ -116,7 +116,6 @@
 <script>
     let scriptData = []; let playerCount = 7; let baseDist = {}; let selectedRoles = new Set();
     let drunkSelected = false; 
-    // Añadimos las variables de control para los nuevos paneles dinámicos
     let manualMods = { godfather: 0, balloonist: 0, hermit: 0, villageidiot: 0, typhon: [] };
     let drawPile = []; let revealed = false;
 
@@ -165,41 +164,32 @@
         let modO = 0; let modT = 0; let modM = 0; let modD = 0;
         const ids = Array.from(selectedRoles).map(r => r.id.toLowerCase().replace(/[-_]/g,''));
         
-        // 1. INTERACCIONES DEL BLOQUE 3 (Ateo, Barón, Invocador, Borracho, Legión, Typhon)
+        // 1. MODIFICADORES AUTOMÁTICOS
         if (ids.includes('atheist')) { modT += (baseDist.m + baseDist.d); modM -= baseDist.m; modD -= baseDist.d; }
         if (ids.includes('baron')) { modO += 2; modT -= 2; }
-        
-        // Invocador: Resta un demonio y añade un aldeano
         if (ids.includes('summoner')) { modD -= 1; modT += 1; }
-        
-        // Borracho: Añade un aldeano a la configuración visual (cumple como forastero tras bambalinas)
+        if (ids.includes('lilmonsta')) { modM += 1; modT -= 1; }
+        if (ids.includes('vigormortis')) { modO -= 1; modT += 1; }
+        if (ids.includes('fanggu')) { modO += 1; modT -= 1; }
+        if (ids.includes('kazali')) { modM -= baseDist.m; modT += baseDist.m; }
         if (drunkSelected) { modT += 1; }
 
-        // Legión: Quita esbirros. Calcula fichas automáticas de Legión
+        // Caso Especial: Legión (Limpia todo lo malo y forasteros, calcula Aldeanos exactos)
         let legionCount = 0;
         if (ids.includes('legion')) {
-            modM -= baseDist.m; // Quita todos los esbirros
             legionCount = Math.floor(playerCount / 2) + 1;
-            // Legión ocupa sus propios espacios en la bolsa, reduciendo proporcionalmente la demanda base
-            let restante = playerCount - legionCount - baseDist.d; // descontamos legiones y el demonio base
-            // Distribuimos el espacio restante respetando la presencia de forasteros de la base si los hubiera
-            if (baseDist.o > 0) {
-                modT = (restante - baseDist.o) - baseDist.t;
-            } else {
-                modT = restante - baseDist.t;
-            }
+            modM = -baseDist.m;
+            modO = -baseDist.o;
+            modD = -baseDist.d;
+            modT = (playerCount - legionCount) - baseDist.t;
         }
 
-        // Señor del Typhon: Quita todos los esbirros y crea paneles de elección uno por uno
+        // Caso Especial: Señor del Typhon
         if (ids.includes('lordoftyphon')) {
-            modM -= baseDist.m; // Esbirros cambian a 0
-            
-            // Inicializar matriz de elecciones de Typhon según el número de esbirros de la base
+            modM -= baseDist.m;
             if (manualMods.typhon.length !== baseDist.m) {
-                manualMods.typhon = new Array(baseDist.m).fill('t'); // Por defecto 't' (Aldeano)
+                manualMods.typhon = new Array(baseDist.m).fill('t');
             }
-            
-            // Generar un panel por cada esbirro reemplazado
             for (let i = 0; i < baseDist.m; i++) {
                 createTyphonPanel(i);
                 if (manualMods.typhon[i] === 't') modT += 1;
@@ -207,33 +197,27 @@
             }
         }
 
-        // 2. INTERACCIONES DEL BLOQUE 2 (Decisiones directas del narrador)
+        // 2. MODIFICADORES POR PANEL DEL NARRADOR
         if (ids.includes('godfather')) { createPanel("PADRINO", "Mod. Forastero:", "godfather", [-1, 1], "panel-evil"); modO += manualMods.godfather; modT -= manualMods.godfather; }
-        
-        // Aeronauta: 0 o +1 Forastero
         if (ids.includes('balloonist')) { createPanel("AERONAUTA", "Mod. Forastero:", "balloonist", [0, 1], "panel-good"); modO += manualMods.balloonist; modT -= manualMods.balloonist; }
-        
-        // Ermitaño: 0 o -1 Forastero
         if (ids.includes('hermit')) { createPanel("ERMITAÑO", "Mod. Forastero:", "hermit", [0, -1], "panel-info"); modO += manualMods.hermit; modT -= manualMods.hermit; }
-        
-        // Tonto del Pueblo: Al elegir 3 TONTOS, pide +2 Aldeanos en el contador dinámico
         if (ids.includes('villageidiot')) { 
             createPanel("TONTO DEL PUEBLO", "Composición:", "villageidiot", [0, 2], "panel-good"); 
-            if (manualMods.villageidiot === 2) {
-                modT += 2;
-            }
+            if (manualMods.villageidiot === 2) modT += 2;
         }
 
-        // Cálculo final de requerimientos para la interfaz
         let finalOutsiders = Math.max(0, baseDist.o + modO);
         const needed = { townsfolk: baseDist.t + modT, outsiders: finalOutsiders, minions: baseDist.m + modM, demons: baseDist.d + modD };
 
-        // Renderizado de las secciones de personajes
+        // Renderizado de las secciones
         ['townsfolk', 'outsiders', 'minions', 'demons', 'travelers'].forEach(type => {
             const roles = scriptData.filter(r => DB[type].includes(r.id.toLowerCase().replace(/[-_]/g,'')));
             if (roles.length === 0) return;
             let selInType = Array.from(selectedRoles).filter(r => DB[type].includes(r.id.toLowerCase().replace(/[-_]/g,'')));
-            let count = selInType.length; // Conteo directo de botones activos
+            
+            // El Borracho cuenta visualmente como Forastero para cumplir los requisitos
+            let count = selInType.length;
+            if (type === 'outsiders' && drunkSelected) count += 1;
             
             const section = document.createElement('div'); section.className = 'type-section';
             let badgeHTML = (type === 'travelers') ? `<span class="count-badge count-ok">${selInType.length}</span>` : `<span class="count-badge ${count === needed[type] ? 'count-ok' : 'count-pending'}">${count} / ${needed[type]}</span>`;
@@ -252,16 +236,17 @@
             section.appendChild(grid); wrapper.appendChild(section);
         });
 
-        // Conteo total real de la bolsa (Fichas físicas de personajes seleccionados)
-        // Nota: Si hay Legión, sumamos automáticamente sus fichas al total de la bolsa.
-        let totalInBag = selectedRoles.size + (ids.includes('legion') ? legionCount : 0);
+        // Conteo físico total de fichas en la bolsa
+        let totalInBag = selectedRoles.size;
+        if (ids.includes('legion')) {
+            totalInBag += (legionCount - 1); // Suma las copias físicas extras de Legión
+        }
         const numTravelers = Array.from(selectedRoles).filter(r => DB.travelers.includes(r.id.toLowerCase().replace(/[-_]/g,''))).length;
         
         document.getElementById('total-bag-info').innerText = `Jugadores: ${playerCount} + ${numTravelers} Viajeros (Total: ${totalInBag})`;
         
-        // El botón se desbloquea si la bolsa física alcanza la meta esperada (Base + Viajeros)
-        document.getElementById('btn-confirm-bag').disabled = totalInBag < (playerCount + numTravelers);
-        checkInclusionAlerts(ids);
+        // Bloqueo estricto: la bolsa debe medir exactamente la suma de jugadores + viajeros
+        document.getElementById('btn-confirm-bag').disabled = totalInBag !== (playerCount + numTravelers);
     }
 
     function createPanel(title, text, key, options, cssClass) {
@@ -269,18 +254,14 @@
         const optsDiv = document.createElement('div'); optsDiv.className = "gf-options";
         options.forEach(opt => {
             const btn = document.createElement('button'); btn.className = `gf-btn ${manualMods[key] === opt ? 'active' : ''}`;
-            if (key === 'villageidiot') {
-                btn.innerText = opt === 0 ? "1 TONTO" : "3 TONTOS";
-            } else {
-                btn.innerText = opt > 0 ? `+${opt}` : opt;
-            }
+            if (key === 'villageidiot') btn.innerText = opt === 0 ? "1 TONTO" : "3 TONTOS";
+            else btn.innerText = opt > 0 ? `+${opt}` : opt;
             btn.onclick = () => { manualMods[key] = opt; updateUI(); };
             optsDiv.appendChild(btn);
         });
         panel.appendChild(optsDiv); document.getElementById('dynamic-configs').appendChild(panel);
     }
 
-    // Panel exclusivo para las múltiples decisiones individuales del Señor del Typhon
     function createTyphonPanel(index) {
         const panel = document.createElement('div'); panel.className = "config-panel panel-evil"; 
         panel.innerHTML = `<div><b>TYPHON (Espacio ${index + 1}):</b> Reemplazar esbirro por:</div>`;
@@ -307,23 +288,23 @@
         let bag = Array.from(selectedRoles);
         const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
         
-        // Si hay Legión, inyectamos físicamente las múltiples fichas de Legión necesarias
+        // Multiplicación física de fichas de Legión
         if (ids.includes('legion')) {
             const legionCount = Math.floor(playerCount / 2) + 1;
             const legionRole = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'legion');
-            // Ya hay una Legión en la bolsa (la seleccionada), inyectamos las restantes (count - 1)
             for (let i = 1; i < legionCount; i++) {
                 bag.push(legionRole);
             }
         }
         
-        // Si el narrador activó los 3 Tontos del Pueblo, duplicamos su ficha en la bolsa física
+        // Multiplicación física de fichas de Tonto del Pueblo
         if (ids.includes('villageidiot') && manualMods.villageidiot === 2) {
             const t = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'villageidiot');
             bag.push(t, t); 
         }
         
-        // Mezclamos la bolsa física real construida
+        // El Borracho NO se inyecta aquí. El narrador ya seleccionó el Aldeano físico extra que lo reemplaza.
+        
         drawPile = bag.sort(() => 0.5 - Math.random()); 
         switchScreen('scr-draw');
     }
@@ -332,8 +313,6 @@
         if (!revealed) {
             if (drawPile.length === 0) return location.reload();
             const role = drawPile.pop(); 
-            
-            // Tratamiento seguro de IDs en caso de fichas inyectadas manualmente
             const id = (role && role.id) ? role.id.toLowerCase().replace(/[-_]/g,'') : 'unknown';
             const isEvil = DB.minions.concat(DB.demons).includes(id);
             const name = TRADUCCIONES[id] || (role && role.id ? role.id.toUpperCase() : "DESCONOCIDO");
