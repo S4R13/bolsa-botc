@@ -115,7 +115,9 @@
 
 <script>
     let scriptData = []; let playerCount = 7; let baseDist = {}; let selectedRoles = new Set();
-    let drunkSelected = false; let manualMods = { godfather: 0, balloonist: 0, hermit: 0, xaan: 0, typhon: 0, typhon_outsiders: 0, villageidiot: 0 };
+    let drunkSelected = false; 
+    // Añadimos las variables de control para los nuevos paneles dinámicos
+    let manualMods = { godfather: 0, balloonist: 0, hermit: 0, villageidiot: 0, typhon: [] };
     let drawPile = []; let revealed = false;
 
     const DB = {
@@ -127,7 +129,7 @@
     };
 
     const TRADUCCIONES = {
-        acrobat: "Acróbata", alchemist: "Alquimista", alsaahir: "Alsaahir", amnesiac: "Amnésico", artist: "Artista", atheist: "Ateo", balloonist: "Aeronauta", banshee: "Banshee", bountyhunter: "Cazarrecompensas", cannibal: "Caníbal", chambermaid: "Sirvienta", chef: "Chef", choirboy: "Niño del Coro", clockmaker: "Relojero", courtier: "Cortesano", cultleader: "Líder de Culto", dreamer: "Soñador", empath: "Empático", engineer: "Ingeniero", exorcist: "Exorcista", farmer: "Granjero", fisherman: "Pescador", flowergirl: "Florista", fool: "Bufón", fortuneteller: "Pitonisa", gambler: "Tahúr", general: "General", gossip: "Chismoso", grandmother: "Abuela", highpriestess: "Suma Sacerdotisa", huntsman: "Cazador", innkeeper: "Posadero", investigator: "Investigador", juggler: "Malabarista", king: "Rey", knight: "Caballero", librarian: "Bibliotecario", lycanthrope: "Licántropo", magician: "Mago", mathematician: "Matemático", mayor: "Alcalde", minstrel: "Juglar", monk: "Monje", nightwatchman: "Sereno", noble: "Noble", oracle: "Oráculo", pacifist: "Pacifista", philosopher: "Filósofo", pixie: "Duendecillo", poppygrower: "Cultivador de Opio", preacher: "Predicador", princess: "Princesa", professor: "Profesor", ravenkeeper: "Guardián de Cuervos", sage: "Sabio", sailor: "Marinero", savant: "Erudito", seamstress: "Costurera", shugenja: "Shugenja", slayer: "Exterminador", snakecharmer: "Encantador de Serpientes", soldier: "Soldado", steward: "Administrador", tealady: "Dama del Té", towncrier: "Pregonero", undertaker: "Enterrador", villageidiot: "Tonto del Pueblo", virgin: "Virgen", washerwoman: "Lavandera", barber: "Barbero", butler: "Mayordomo", damsel: "Damisela", drunk: "Borracho", golem: "Gólem", goon: "Matón", hatter: "Sombrerero", heretic: "Hereje", hermit: "Ermitaño", klutz: "Patoso", lunatic: "Lunático", moonchild: "Niña de la Luna", mutant: "Mutante", ogre: "Ogro", plaguedoctor: "Doctor de la Plaga", politician: "Político", puzzlemaster: "Maestro del Puzle", recluse: "Recluso", saint: "Santo", snitch: "Soplón", sweetheart: "Adorable", tinker: "Manitas", zealot: "Fanático", assassin: "Asesino", baron: "Barón", boffin: "Rata de Laboratorio", boomdandy: "Boomdandy", cerenovus: "Cerenovus", devilsadvocate: "Abogado del Diablo", eviltwin: "Gemela Malvada", fearmonger: "Sembrador de Miedo", goblin: "Goblin", godfather: "Padrino", harpy: "Arpía", marionette: "Marioneta", mastermind: "Mente Maestra", mezepheles: "Mezepheles", organgrinder: "Organillero", pithag: "Pit Hag", poisoner: "Envenenador", psychopath: "Psicópata", scarletwoman: "Mujer Escarlata", spy: "Espía", summoner: "Invocador", vizier: "Visir", widow: "Viuda", witch: "Bruja", wizard: "Hechicero", wraith: "Espectro", xaan: "Xaan", alhadikhia: "Al-Hadikhia", fanggu: "Fang Gu", imp: "Diablillo", kazali: "Kazali", legion: "Legión", leviathan: "Leviatán", lilmonsta: "Lil' Monsta", lleech: "Lleech", lordoftyphon: "Señor de Typhon", nodashii: "No Dashii", ojo: "Ojo", po: "Po", pukka: "Pukka", riot: "Riot", shabaloth: "Shabaloth", vigormortis: "Vigormortis", vortox: "Vortox", yaggababble: "Yaggababble", zombuul: "Zombuul", apprentice: "Aprendiz", barista: "Barista", beggar: "Mendigo", bishop: "Obispo", bonecollector: "Coleccionista de Huesos", bureaucrat: "Burócrata", butcher: "Carnicero", cacklejack: "Risistencia", deviant: "Pervertido", gangster: "Gánster", gnome: "Gnomo", gunslinger: "Pistolero", harlot: "Meretriz", judge: "Juez", matron: "Institutriz", scapegoat: "Chivo Expiatorio", thief: "Ladrón", voudon: "Voudon"
+        acrobat: "Acróbata", alchemist: "Alquimista", alsaahir: "Alsaahir", amnesiac: "Amnésico", artist: "Artista", atheist: "Ateo", balloonist: "Aeronauta", banshee: "Banshee", bountyhunter: "Cazarrecompensas", cannibal: "Caníbal", chambermaid: "Sirvienta", chef: "Chef", choirboy: "Niño del Coro", clockmaker: "Relojero", courtier: "Cortesano", cultleader: "Líder de Culto", dreamer: "Soñador", empath: "Empático", engineer: "Ingeniero", exorcist: "Exorcista", farmer: "Granjero", fisherman: "Pescador", flowergirl: "Florista", fool: "Bufón", fortuneteller: "Pitonisa", gambler: "Tahúr", general: "General", gossip: "Chismoso", grandmother: "Abuela", highpriestess: "Suma Sacerdotisa", huntsman: "Cazador", innkeeper: "Posadero", investigator: "Investigador", juggler: "Malabarista", king: "Rey", knight: "Caballero", librarian: "Bibliotecario", lycanthrope: "Licántropo", magician: "Mago", mathematician: "Matemático", mayor: "Alcalde", minstrel: "Juglar", monk: "Monje", nightwatchman: "Sereno", noble: "Noble", oracle: "Oráculo", pacifist: "Pacifista", philosopher: "Filósofo", pixie: "Duendecillo", poppygrower: "Cultivador de Opio", preacher: "Predicador", princess: "Princesa", professor: "Profesor", ravenkeeper: "Guardián de Cuervos", sage: "Sabio", sailor: "Marinero", savant: "Erudito", seamstress: "Costurera", shugenja: "Shugenja", slayer: "Exterminador", snakecharmer: "Encantador de Serpientes", soldier: "Soldado", steward: "Administrador", tealady: "Dama del Té", towncrier: "Pregonero", undertaker: "Enterrador", villageidiot: "Tonto del Pueblo", virgin: "Virgen", washerwoman: "Lavandera", barber: "Barbero", butler: "Mayordomo", damsel: "Damisela", drunk: "Borracho", golem: "Gólem", goon: "Matón", hatter: "Sombrerero", heretic: "Hereje", hermit: "Ermitaño", klutz: "Patoso", lunatic: "Lunático", moonchild: "Niña de la Luna", mutant: "Mutante", ogre: "Ogro", plaguedoctor: "Doctor de Plaga", politician: "Político", puzzlemaster: "Maestro del Puzle", recluse: "Recluso", saint: "Santo", snitch: "Soplón", sweetheart: "Adorable", tinker: "Manitas", zealot: "Fanático", assassin: "Asesino", baron: "Barón", boffin: "Rata de Laboratorio", boomdandy: "Boomdandy", cerenovus: "Cerenovus", devilsadvocate: "Abogado del Diablo", eviltwin: "Gemela Malvada", fearmonger: "Sembrador de Miedo", goblin: "Goblin", godfather: "Padrino", harpy: "Arpía", marionette: "Marioneta", mastermind: "Mente Maestra", mezepheles: "Mezepheles", organgrinder: "Organillero", pithag: "Pit Hag", poisoner: "Envenenador", psychopath: "Psicópata", scarletwoman: "Mujer Escarlata", spy: "Espía", summoner: "Invocador", vizier: "Visir", widow: "Viuda", witch: "Bruja", wizard: "Hechicero", wraith: "Espectro", xaan: "Xaan", alhadikhia: "Al-Hadikhia", fanggu: "Fang Gu", imp: "Diablillo", kazali: "Kazali", legion: "Legión", leviathan: "Leviatán", lilmonsta: "Lil' Monsta", lleech: "Lleech", lordoftyphon: "Señor de Typhon", nodashii: "No Dashii", ojo: "Ojo", po: "Po", pukka: "Pukka", riot: "Riot", shabaloth: "Shabaloth", vigormortis: "Vigormortis", vortox: "Vortox", yaggababble: "Yaggababble", zombuul: "Zombuul", apprentice: "Aprendiz", barista: "Barista", beggar: "Mendigo", bishop: "Obispo", bonecollector: "Coleccionista de Huesos", bureaucrat: "Burócrata", butcher: "Carnicero", cacklejack: "Risistencia", deviant: "Pervertido", gangster: "Gánster", gnome: "Gnomo", gunslinger: "Pistolero", harlot: "Meretriz", judge: "Juez", matron: "Institutriz", scapegoat: "Chivo Expiatorio", thief: "Ladrón", voudon: "Voudon"
     };
 
     function loadRemoteScript(fileName) {
@@ -153,28 +155,85 @@
     function startSelection() {
         let val = parseInt(document.getElementById('p-count').value); playerCount = Math.min(Math.max(val, 5), 18);
         if(playerCount == 5) baseDist = {t:3, o:0, m:1, d:1}; else if(playerCount == 6) baseDist = {t:3, o:1, m:1, d:1}; else if(playerCount == 7) baseDist = {t:5, o:0, m:1, d:1}; else if(playerCount == 8) baseDist = {t:5, o:1, m:1, d:1}; else if(playerCount == 9) baseDist = {t:5, o:2, m:1, d:1}; else if(playerCount == 10) baseDist = {t:7, o:0, m:2, d:1}; else if(playerCount == 11) baseDist = {t:7, o:1, m:2, d:1}; else if(playerCount == 12) baseDist = {t:7, o:2, m:2, d:1}; else if(playerCount == 13) baseDist = {t:9, o:0, m:3, d:1}; else if(playerCount == 14) baseDist = {t:9, o:1, m:3, d:1}; else if(playerCount == 15) baseDist = {t:9, o:2, m:3, d:1}; else { baseDist = {t:11, o:playerCount-16, m:4, d:1}; }
-        selectedRoles.clear(); drunkSelected = false; updateUI(); switchScreen('scr-selection');
+        selectedRoles.clear(); drunkSelected = false; manualMods = { godfather: 0, balloonist: 0, hermit: 0, villageidiot: 0, typhon: [] }; updateUI(); switchScreen('scr-selection');
     }
 
     function updateUI() {
         const wrapper = document.getElementById('sections-wrapper'); const configWrapper = document.getElementById('dynamic-configs');
         wrapper.innerHTML = ""; configWrapper.innerHTML = "";
+        
         let modO = 0; let modT = 0; let modM = 0; let modD = 0;
         const ids = Array.from(selectedRoles).map(r => r.id.toLowerCase().replace(/[-_]/g,''));
         
+        // 1. INTERACCIONES DEL BLOQUE 3 (Ateo, Barón, Invocador, Borracho, Legión, Typhon)
         if (ids.includes('atheist')) { modT += (baseDist.m + baseDist.d); modM -= baseDist.m; modD -= baseDist.d; }
-        if (ids.includes('godfather')) { createPanel("PADRINO", "Mod. Forastero:", "godfather", [-1, 1], "panel-evil"); modO += manualMods.godfather; modT -= manualMods.godfather; }
         if (ids.includes('baron')) { modO += 2; modT -= 2; }
-        if (drunkSelected) modT += 1;
+        
+        // Invocador: Resta un demonio y añade un aldeano
+        if (ids.includes('summoner')) { modD -= 1; modT += 1; }
+        
+        // Borracho: Añade un aldeano a la configuración visual (cumple como forastero tras bambalinas)
+        if (drunkSelected) { modT += 1; }
 
+        // Legión: Quita esbirros. Calcula fichas automáticas de Legión
+        let legionCount = 0;
+        if (ids.includes('legion')) {
+            modM -= baseDist.m; // Quita todos los esbirros
+            legionCount = Math.floor(playerCount / 2) + 1;
+            // Legión ocupa sus propios espacios en la bolsa, reduciendo proporcionalmente la demanda base
+            let restante = playerCount - legionCount - baseDist.d; // descontamos legiones y el demonio base
+            // Distribuimos el espacio restante respetando la presencia de forasteros de la base si los hubiera
+            if (baseDist.o > 0) {
+                modT = (restante - baseDist.o) - baseDist.t;
+            } else {
+                modT = restante - baseDist.t;
+            }
+        }
+
+        // Señor del Typhon: Quita todos los esbirros y crea paneles de elección uno por uno
+        if (ids.includes('lordoftyphon')) {
+            modM -= baseDist.m; // Esbirros cambian a 0
+            
+            // Inicializar matriz de elecciones de Typhon según el número de esbirros de la base
+            if (manualMods.typhon.length !== baseDist.m) {
+                manualMods.typhon = new Array(baseDist.m).fill('t'); // Por defecto 't' (Aldeano)
+            }
+            
+            // Generar un panel por cada esbirro reemplazado
+            for (let i = 0; i < baseDist.m; i++) {
+                createTyphonPanel(i);
+                if (manualMods.typhon[i] === 't') modT += 1;
+                if (manualMods.typhon[i] === 'o') modO += 1;
+            }
+        }
+
+        // 2. INTERACCIONES DEL BLOQUE 2 (Decisiones directas del narrador)
+        if (ids.includes('godfather')) { createPanel("PADRINO", "Mod. Forastero:", "godfather", [-1, 1], "panel-evil"); modO += manualMods.godfather; modT -= manualMods.godfather; }
+        
+        // Aeronauta: 0 o +1 Forastero
+        if (ids.includes('balloonist')) { createPanel("AERONAUTA", "Mod. Forastero:", "balloonist", [0, 1], "panel-good"); modO += manualMods.balloonist; modT -= manualMods.balloonist; }
+        
+        // Ermitaño: 0 o -1 Forastero
+        if (ids.includes('hermit')) { createPanel("ERMITAÑO", "Mod. Forastero:", "hermit", [0, -1], "panel-info"); modO += manualMods.hermit; modT -= manualMods.hermit; }
+        
+        // Tonto del Pueblo: Al elegir 3 TONTOS, pide +2 Aldeanos en el contador dinámico
+        if (ids.includes('villageidiot')) { 
+            createPanel("TONTO DEL PUEBLO", "Composición:", "villageidiot", [0, 2], "panel-good"); 
+            if (manualMods.villageidiot === 2) {
+                modT += 2;
+            }
+        }
+
+        // Cálculo final de requerimientos para la interfaz
         let finalOutsiders = Math.max(0, baseDist.o + modO);
         const needed = { townsfolk: baseDist.t + modT, outsiders: finalOutsiders, minions: baseDist.m + modM, demons: baseDist.d + modD };
 
+        // Renderizado de las secciones de personajes
         ['townsfolk', 'outsiders', 'minions', 'demons', 'travelers'].forEach(type => {
             const roles = scriptData.filter(r => DB[type].includes(r.id.toLowerCase().replace(/[-_]/g,'')));
             if (roles.length === 0) return;
             let selInType = Array.from(selectedRoles).filter(r => DB[type].includes(r.id.toLowerCase().replace(/[-_]/g,'')));
-            let count = selInType.length + (type === 'outsiders' && drunkSelected ? 1 : 0);
+            let count = selInType.length; // Conteo directo de botones activos
             
             const section = document.createElement('div'); section.className = 'type-section';
             let badgeHTML = (type === 'travelers') ? `<span class="count-badge count-ok">${selInType.length}</span>` : `<span class="count-badge ${count === needed[type] ? 'count-ok' : 'count-pending'}">${count} / ${needed[type]}</span>`;
@@ -193,10 +252,15 @@
             section.appendChild(grid); wrapper.appendChild(section);
         });
 
-        let totalInBag = selectedRoles.size + (drunkSelected ? 1 : 0);
+        // Conteo total real de la bolsa (Fichas físicas de personajes seleccionados)
+        // Nota: Si hay Legión, sumamos automáticamente sus fichas al total de la bolsa.
+        let totalInBag = selectedRoles.size + (ids.includes('legion') ? legionCount : 0);
         const numTravelers = Array.from(selectedRoles).filter(r => DB.travelers.includes(r.id.toLowerCase().replace(/[-_]/g,''))).length;
+        
         document.getElementById('total-bag-info').innerText = `Jugadores: ${playerCount} + ${numTravelers} Viajeros (Total: ${totalInBag})`;
-        document.getElementById('btn-confirm-bag').disabled = totalInBag < playerCount;
+        
+        // El botón se desbloquea si la bolsa física alcanza la meta esperada (Base + Viajeros)
+        document.getElementById('btn-confirm-bag').disabled = totalInBag < (playerCount + numTravelers);
         checkInclusionAlerts(ids);
     }
 
@@ -205,11 +269,31 @@
         const optsDiv = document.createElement('div'); optsDiv.className = "gf-options";
         options.forEach(opt => {
             const btn = document.createElement('button'); btn.className = `gf-btn ${manualMods[key] === opt ? 'active' : ''}`;
-            btn.innerText = opt > 0 ? `+${opt}` : opt;
+            if (key === 'villageidiot') {
+                btn.innerText = opt === 0 ? "1 TONTO" : "3 TONTOS";
+            } else {
+                btn.innerText = opt > 0 ? `+${opt}` : opt;
+            }
             btn.onclick = () => { manualMods[key] = opt; updateUI(); };
             optsDiv.appendChild(btn);
         });
         panel.appendChild(optsDiv); document.getElementById('dynamic-configs').appendChild(panel);
+    }
+
+    // Panel exclusivo para las múltiples decisiones individuales del Señor del Typhon
+    function createTyphonPanel(index) {
+        const panel = document.createElement('div'); panel.className = "config-panel panel-evil"; 
+        panel.innerHTML = `<div><b>TYPHON (Espacio ${index + 1}):</b> Reemplazar esbirro por:</div>`;
+        const optsDiv = document.createElement('div'); optsDiv.className = "gf-options";
+        
+        const btnT = document.createElement('button'); btnT.className = `gf-btn ${manualMods.typhon[index] === 't' ? 'active' : ''}`;
+        btnT.innerText = "ALDEANO"; btnT.onclick = () => { manualMods.typhon[index] = 't'; updateUI(); };
+        
+        const btnO = document.createElement('button'); btnO.className = `gf-btn ${manualMods.typhon[index] === 'o' ? 'active' : ''}`;
+        btnO.innerText = "FORASTERO"; btnO.onclick = () => { manualMods.typhon[index] = 'o'; updateUI(); };
+        
+        optsDiv.appendChild(btnT); optsDiv.appendChild(btnO); panel.appendChild(optsDiv);
+        document.getElementById('dynamic-configs').appendChild(panel);
     }
 
     function checkInclusionAlerts(ids) {
@@ -221,31 +305,47 @@
 
     function finalizeSetup() {
         let bag = Array.from(selectedRoles);
-        if (drunkSelected) bag.push({ id: 'drunk' });
-        
         const ids = bag.map(r => r.id.toLowerCase().replace(/[-_]/g,''));
-        if (ids.includes('villageidiot') && manualMods.villageidiot === 2) {
-            const t = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'villageidiot');
-            bag.push(t, t); let rem = 0;
-            for (let i = bag.length - 1; i >= 0 && rem < 2; i--) {
-                let rid = bag[i].id.toLowerCase().replace(/[-_]/g,'');
-                if (DB.townsfolk.includes(rid) && rid !== 'villageidiot') { bag.splice(i, 1); rem++; }
+        
+        // Si hay Legión, inyectamos físicamente las múltiples fichas de Legión necesarias
+        if (ids.includes('legion')) {
+            const legionCount = Math.floor(playerCount / 2) + 1;
+            const legionRole = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'legion');
+            // Ya hay una Legión en la bolsa (la seleccionada), inyectamos las restantes (count - 1)
+            for (let i = 1; i < legionCount; i++) {
+                bag.push(legionRole);
             }
         }
-        drawPile = bag.sort(() => 0.5 - Math.random()); switchScreen('scr-draw');
+        
+        // Si el narrador activó los 3 Tontos del Pueblo, duplicamos su ficha en la bolsa física
+        if (ids.includes('villageidiot') && manualMods.villageidiot === 2) {
+            const t = bag.find(r => r.id.toLowerCase().replace(/[-_]/g,'') === 'villageidiot');
+            bag.push(t, t); 
+        }
+        
+        // Mezclamos la bolsa física real construida
+        drawPile = bag.sort(() => 0.5 - Math.random()); 
+        switchScreen('scr-draw');
     }
 
     function handleDraw() {
         if (!revealed) {
             if (drawPile.length === 0) return location.reload();
-            const role = drawPile.pop(); const id = role.id.toLowerCase().replace(/[-_]/g,'');
+            const role = drawPile.pop(); 
+            
+            // Tratamiento seguro de IDs en caso de fichas inyectadas manualmente
+            const id = (role && role.id) ? role.id.toLowerCase().replace(/[-_]/g,'') : 'unknown';
             const isEvil = DB.minions.concat(DB.demons).includes(id);
-            const name = TRADUCCIONES[id] || role.id.toUpperCase();
+            const name = TRADUCCIONES[id] || (role && role.id ? role.id.toUpperCase() : "DESCONOCIDO");
+            
             const frame = document.getElementById('token-frame');
             frame.className = 'token-display ' + (isEvil ? 'red-glow' : 'blue-glow');
+            
             const radio = 92; const centro = 150; const inicioX = centro - radio; const finX = centro + radio;
-            const fontSize = name.length > 16 ? "18" : "28";
+            const fontSize = name.length > 14 ? "20" : "28";
+            
             frame.innerHTML = `<svg class="curved-name-svg" viewBox="0 0 300 300"><path id="curve" d="M ${inicioX},${centro} A ${radio},${radio} 0 1,1 ${finX},${centro}" fill="transparent" /><text font-size="${fontSize}"><textPath href="#curve" startOffset="50%" text-anchor="middle">${name}</textPath></text></svg><img id="t-img" src="img/${id}.png" alt="Token">`;
+            
             const img = document.getElementById('t-img');
             img.onerror = function() {
                 this.src = `https://villacuervos.es/media/roles/carousel/townsfolk/${id}.png`;
